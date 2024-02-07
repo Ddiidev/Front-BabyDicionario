@@ -1,0 +1,15 @@
+@import url('@/assets/base.css');
+@import url('@/assets/tooltip.css');
+
+.centralized-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
