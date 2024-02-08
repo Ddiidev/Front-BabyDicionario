@@ -1,15 +1,16 @@
 @import url('@/assets/base.css');
+@import url('@/assets/pico-2/css/pico.colors.css');
+@import url('@/assets/pico-2/css/pico.pumpkin.min.css');
 @import url('@/assets/tooltip.css');
 
-.centralized-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.main {
+    margin-top: 150px;
 }
 
-body {
-    margin: 0;
-    padding: 0;
+:root {
+    --pico-font-family: Dosis;
+    --pico-border-radius: 0.8rem;
+    --pico-typography-spacing-vertical: 0.3rem;
+    --pico-form-element-spacing-vertical: 1rem;
+    --pico-form-element-spacing-horizontal: 1.25rem;
 }

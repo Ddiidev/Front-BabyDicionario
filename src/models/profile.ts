@@ -1,5 +1,6 @@
 export interface Profile {
     id?: string
+    apelido: string
     primeiro_nome: string
     ultimo_nome: string
     data_nascimento: string

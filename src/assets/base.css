@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @font-face {
     font-family: Dosis;
     src: url(@/assets/Dosis/static/Dosis-ExtraLight.ttf);
@@ -43,7 +39,3 @@
     src: url(@/assets/Dosis/static/Dosis-ExtraBold.ttf);
     font-weight: 900;
 }
-
-ul {
-    list-style-type: none;
-}  

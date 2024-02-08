@@ -1,23 +1,21 @@
 <template>
-    <section>
-        <!-- <div class='air air1'></div>
+    <div class="sectionbackground">
+        <div class='air air1'></div>
         <div class='air air2'></div>
         <div class='air air3'></div>
-        <div class='air air4'></div> -->
+        <div class='air air4'></div>
         <slot></slot>
-    </section>
+    </div>
 </template>
 
-<style>
-section {
-    position: relative;
+<style scoped>
+.sectionbackground {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background: #fee1d6;
-    overflow: hidden;
 }
 
-section .air {
+.sectionbackground .air {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -27,15 +25,15 @@ section .air {
     background-size: 1000px 100px
 }
 
-section .air.air1 {
-    animation: wave 30s linear infinite;
+.sectionbackground .air.air1 {
+    animation: wave 25s linear infinite;
     z-index: 1000;
     opacity: 1;
     animation-delay: 0s;
     bottom: 0;
 }
 
-section .air.air2 {
+.sectionbackground .air.air2 {
     animation: wave2 15s linear infinite;
     z-index: 999;
     opacity: 0.5;
@@ -43,7 +41,7 @@ section .air.air2 {
     bottom: 10px;
 }
 
-section .air.air3 {
+.sectionbackground .air.air3 {
     animation: wave 30s linear infinite;
     z-index: 998;
     opacity: 0.2;
@@ -51,7 +49,7 @@ section .air.air3 {
     bottom: 15px;
 }
 
-section .air.air4 {
+.sectionbackground .air.air4 {
     animation: wave2 5s linear infinite;
     z-index: 997;
     opacity: 0.7;
