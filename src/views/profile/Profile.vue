@@ -14,8 +14,8 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
 <template>
     <NavBar></NavBar>
     <main class="main container-fluid">
-        <div class="grid">
-            <article id="side" style="text-align: center;">
+        <div style="display: flex; justify-content: start;" class="grid">
+            <article id="side" style="width: 35%; text-align: center;">
                 <header>
                     <img style="margin-top: 0px;" class="circular-image" src="@/assets/imagens-temp/dante.jpg" />
                     <hgroup>
@@ -78,7 +78,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                 </footer>
             </article>
 
-            <div id="datails-baby">
+            <div style="width: 65%;" id="datails-baby">
                 <article role="button" class="outline">
                     <div style="align-items: center;" class="grid">
                         <div style="margin-left: 25%;">
@@ -104,28 +104,29 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                     </div>
                 </article>
 
-                <article role="button" class="outline">
-                    <div style="align-items: center;" class="grid">
-                        <div style="margin-left: 25%;">
-                            <div class="circle">
-                                <div>
-                                    <h3> 2 </h3>
-                                    <p>Nv. Árvore <br /> genealógico</p>
+                <div data-tooltip="WIP ( Em construção )" class="tooltip">
+                    <article disabled role="button" class="outline">
+                        <div style="align-items: center;" class="grid">
+                            <div style="margin-left: 25%;">
+                                <div class="circle">
+                                    <div>
+                                        <h3> 2 </h3>
+                                        <p>Nv. Árvore <br /> genealógico</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div style="margin-left: -50px; margin-right: 100px;">
-                            <blockquote>
-                                Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
-                                <footer>
-                                    Essa área você quem é irmão e quem é primo
-                                </footer>
-
-                            </blockquote>
+                            <div style="margin-left: -50px; margin-right: 100px;">
+                                <blockquote>
+                                    Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
+                                    <footer>
+                                        Essa é a área dos parentes 
+                                    </footer>
+                                </blockquote>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
+                </div>
             </div>
         </div>
     </main>

@@ -1,10 +1,16 @@
 @import url('@/assets/base.css');
 @import url('@/assets/pico-2/css/pico.colors.css');
 @import url('@/assets/pico-2/css/pico.pumpkin.min.css');
-@import url('@/assets/tooltip.css');
 
 .main {
     margin-top: 150px;
+}
+
+:root:not([data-theme=dark]), [data-theme=light] {
+    --pico-card-box-shadow: 5px;
+    --pico-background-color: #f3f2ed30;
+    --pico-color: #8d5a53;
+    --pico-muted-border-color: #b19d9559;
 }
 
 :root {
