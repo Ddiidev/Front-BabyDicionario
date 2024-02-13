@@ -9,7 +9,11 @@ const router = createRouter({
     },
     {
       path: '/profile/:id/:name',
-      component: () => import('../views/profile/profile.vue')
+      component: () => import('@/views/profile/Profile.vue')
+    },
+    {
+      path: '/createUser',
+      component: () => import('@/views/user/CreateUser.vue')
     }
   ]
 })

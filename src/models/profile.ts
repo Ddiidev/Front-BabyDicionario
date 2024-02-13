@@ -10,8 +10,8 @@ export interface Profile {
     altura: number
     cor: string
     tipo_sanguineo: string
-    pai_id: number
-    mae_id: number
-    irmaos_id: any[]
+    pai?: Profile
+    mae?: Profile
+    irmaos: Profile[]
   }
   

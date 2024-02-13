@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
-import { reactive } from 'vue';
-// import confs from '@/constants/conf';
 import NavBar from '@/components/NavBar.vue';
-
-import type { Profile } from '@/models/profile';
-import { getProfile } from './profile';
+import { getProfile, idadeBebe, quantidadeIrmaos, resenha, currentProfile } from './profile';
 
 localStorage.setItem('current_id', useRoute().params.id.toString())
 </script>
@@ -19,7 +14,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                 <header>
                     <img style="margin-top: 0px;" class="circular-image" src="@/assets/imagens-temp/dante.jpg" />
                     <hgroup>
-                        <h2>Dante</h2>
+                        <h2>{{ currentProfile.primeiro_nome }}</h2>
                         <p>{{ currentProfile.idade }} ano(s)</p>
                     </hgroup>
                 </header>
@@ -61,7 +56,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/milca.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>Milca</h2>
+                                <h2>{{ currentProfile.mae?.primeiro_nome }}</h2>
                                 <p>Mãe</p>
                             </hgroup>
                         </div>
@@ -69,7 +64,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/andré.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>André</h2>
+                                <h2>{{ currentProfile.pai?.primeiro_nome }}</h2>
                                 <p>Pai</p>
                             </hgroup>
                         </div>
@@ -120,7 +115,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
                                 <blockquote>
                                     Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
                                     <footer>
-                                        Essa é a área dos parentes 
+                                        Essa é a área dos parentes
                                     </footer>
                                 </blockquote>
                             </div>
@@ -131,51 +126,6 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
         </div>
     </main>
 </template>
-
-<script lang="ts">
-let currentProfile = reactive<Profile>({
-    apelido: "",
-    primeiro_nome: "Dante",
-    idade: 2.3,
-    ultimo_nome: '',
-    data_nascimento: '',
-    peso: 0,
-    sexo: '',
-    altura: 0,
-    cor: '',
-    tipo_sanguineo: '',
-    pai_id: 0,
-    mae_id: 0,
-    irmaos_id: []
-});
-
-function resenha(): string {
-    if (currentProfile.idade < 1)
-        return `${currentProfile.primeiro_nome} o RN mais lindo!`;
-    else if (currentProfile.idade < 3)
-        return `${currentProfile.primeiro_nome} está na fase da adolecência do bebê.\nBoa sorte!`;
-    else
-        return `${currentProfile.primeiro_nome} irá fazer perguntas que o papai e a mamãe não consegue imaginar!`;
-}
-
-function idadeBebe(): string {
-    if (currentProfile.idade < 1)
-        return `${currentProfile.idade} (RN)`
-    else if (currentProfile.idade < 2)
-        return `${currentProfile.idade} ano`
-    else
-        return `${currentProfile.idade} anos`
-}
-
-function quantidadeIrmaos(): string {
-    if (currentProfile.irmaos_id.length == 0)
-        return "Nenhum";
-    else
-        return currentProfile.irmaos_id.length.toString();
-}
-
-currentProfile = Object.assign(currentProfile, await getProfile(localStorage.getItem('current_id')!))
-</script>
 
 <style>
 .circle {
