@@ -2,14 +2,15 @@
 import NavBar from '@/components/NavBar.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch, codeVerificationMatch, form_data } from './CreateUser';
-//
+import * as ResponsiveUI from './ResponsiveUI';
+
 </script>
 
 <template>
     <NavBar hideCreateAcount></NavBar>
-    <main style="padding-left: 3%; padding-right: 3%;" class="main container">
-        <div style="display: flex; justify-content: start;" class="grid">
-            <article id="side" style="width: 35%; text-align: center;">
+    <main style="padding-left: 3%; padding-right: 3%;" class="main container-fluid">
+        <div class="grid">
+            <article id="side" style="justify-self: center; text-align: center;">
                 <header>
                     <img class="rounded-image" src="@/assets/logo.png" style="width: 100px; height: 100px;" />
                     <hgroup style="margin-top: 10px">
@@ -52,13 +53,14 @@ import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch
                             <input v-model="form_data.senhaConfirm" name="pass_confirm" placeholder="Confirme sua senha"
                                 type="password" aria-describedby="valid-pass" :aria-invalid="!passwordMatch()"
                                 aria-label="Password" />
-                            <small id="valid-pass"> {{ !passwordMatch() ? "Senhas não coincidem" : "Perfeito!" }} </small>
+                            <small id="valid-pass"> {{ !passwordMatch() ? "Senhas não coincidem" : "Perfeito!" }}
+                            </small>
                         </label>
                     </fieldset>
 
                     <fieldset v-if="current_step === 3">
                         <label>
-                            <h4>Estamos quase lá, só preciso que você confirme</h4>
+                            <h4>Estamos quase lá, só preciso que você confirme seu e-mail</h4>
 
                             <small>Será enviado um código de confirmação para seu e-mail</small>
                             <h5>{{ form_data.email }}</h5>
@@ -69,7 +71,7 @@ import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch
                         <label>
                             <h4>Foi enviado um código para seu e-mail</h4>
 
-                            <input v-model="form_data.codigoConfirmacao" placeholder="Confirme o código enviado"
+                            <input v-model="form_data.codigoConfirmacao" placeholder="Digite o código enviado"
                                 aria-describedby="valid-code" :aria-invalid="!codeVerificationMatch()"
                                 aria-label="Password" />
                             <small id="valid-code"> {{ !codeVerificationMatch() ? "Código inválido" : "Perfeito!!" }}
@@ -82,17 +84,15 @@ import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch
                     <ToolButton v-if="current_step != 4" :onclick="nextStep">Avançar >></ToolButton>
                 </label>
             </article>
-
-
-            <div style="width: 65%;" id="body">
-                <article class="article_message-container">
+            <div id="body">
+                <article v-if="ResponsiveUI.defaultMessageContainer" class="article_message-container">
                     <div class="message-container">
                         <h5 v-for="(item, index) in messages" :style="`animation-delay: ${index * 2}s`"
                             class="floating-message">{{ item }}</h5>
                     </div>
 
                     <blockquote style="text-align: start;">
-                        O dicionário do bebê é um projeto que guardei em meu coração <br/>
+                        O dicionário do bebê é um projeto que guardei em meu coração <br />
                         desde que meu filho disse papá pela primeira vez. #coração_quentinho ❤️‍🔥
                         <footer>
                             <cite>— de: André para todos os pais</cite>
@@ -105,6 +105,22 @@ import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
+    mounted() {
+        ResponsiveUI.calculateView(this);
+        window.addEventListener("resize", this.EventHandleResize);
+    },
+    unmounted() {
+        window.removeEventListener("resize", this.EventHandleResize);
+    },
+    methods: {
+        EventHandleResize(e: Event) {
+            ResponsiveUI.calculateView(this);
+        },
+    },
+});
+
 const messages = [
     "Ter um filho é ter uma casa cheia de amor.",
     "Meu bebê, meu grande amor.",

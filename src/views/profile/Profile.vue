@@ -10,7 +10,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
     <NavBar></NavBar>
     <main class="main container-fluid">
         <div style="display: flex; justify-content: start;" class="grid">
-            <article id="side" style="width: 35%; text-align: center;">
+            <article id="side" style="text-align: center;">
                 <header>
                     <img style="margin-top: 0px;" class="circular-image" src="@/assets/imagens-temp/dante.jpg" />
                     <hgroup>
@@ -76,49 +76,37 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
             <div style="width: 65%;" id="datails-baby">
                 <article role="button" class="outline">
                     <div style="align-items: center;" class="grid">
-                        <div style="margin-left: 25%;">
-                            <div class="circle">
-                                <div>
-                                    <h3> 32 </h3>
-                                    <p>palavras</p>
-                                </div>
-                            </div>
+                        <div>
+                            <h3> 32 </h3>
+                            <p>palavras</p>
                         </div>
 
-                        <div style="margin-left: -50px; margin-right: 100px;">
-                            <blockquote>
-                                Quer saber quando seu bebê falou a primeira palavrinha?
-                                <hr />
-                                E a idade do seu bebezinho quando falou pela primeira vez?
-                                <footer>
-                                    Essa área é pra isso mesmo 😉
-                                </footer>
+                        <blockquote>
+                            Quer saber quando seu bebê falou a primeira palavrinha?
+                            <hr />
+                            E a idade do seu bebezinho quando falou pela primeira vez?
+                            <footer>
+                                Essa área é pra isso mesmo 😉
+                            </footer>
 
-                            </blockquote>
-                        </div>
+                        </blockquote>
                     </div>
                 </article>
 
                 <div data-tooltip="WIP ( Em construção )" class="tooltip">
                     <article disabled role="button" class="outline">
                         <div style="align-items: center;" class="grid">
-                            <div style="margin-left: 25%;">
-                                <div class="circle">
-                                    <div>
-                                        <h3> 2 </h3>
-                                        <p>Nv. Árvore <br /> genealógico</p>
-                                    </div>
-                                </div>
+                            <div>
+                                <h3> 2 </h3>
+                                <p>Nv. Árvore <br /> genealógico</p>
                             </div>
 
-                            <div style="margin-left: -50px; margin-right: 100px;">
-                                <blockquote>
-                                    Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
-                                    <footer>
-                                        Essa é a área dos parentes
-                                    </footer>
-                                </blockquote>
-                            </div>
+                            <blockquote>
+                                Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
+                                <footer>
+                                    Essa é a área dos parentes
+                                </footer>
+                            </blockquote>
                         </div>
                     </article>
                 </div>
@@ -127,26 +115,7 @@ localStorage.setItem('current_id', useRoute().params.id.toString())
     </main>
 </template>
 
-<style>
-.circle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 180px;
-    height: 180px;
-    max-width: 180px;
-    min-height: 180px;
-    border-radius: 50%;
-    border: 10px solid #f55a2f4d;
-    text-align: center;
-    font-family: Dosis;
-    white-space: normal;
-    /* Evita quebras indesejadas de linha */
-    overflow: hidden;
-    /* Oculta qualquer conteúdo que exceda os limites */
-}
-
+<style scoped>
 .circular-image {
     margin-top: 5%;
     width: 150px;

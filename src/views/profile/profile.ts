@@ -4,24 +4,31 @@ import axios from 'axios';
 import { reactive } from 'vue';
 
 export async function getProfile(id: string): Promise<Profile> {
-    const t = await axios.get(`${confs.server}/profiles?id=${id}`);
+    let result = {} as Profile;
+    try{
+        result = await axios.get(`${confs.server}/profile/${id}`);
+    } catch {}
 
-    return t.data
+    return result;
 }
 
 export let currentProfile = reactive<Profile>({
-    apelido: "",
+    apelido: "Pitxhico",
     primeiro_nome: "Dante",
     idade: 2.3,
     ultimo_nome: '',
-    data_nascimento: '',
-    peso: 0,
+    data_nascimento: '05/08/2021',
+    peso: 11.5,
     sexo: '',
     altura: 0,
     cor: '',
     tipo_sanguineo: '',
-    pai: {} as Profile,
-    mae: {} as Profile,
+    pai: {
+        primeiro_nome: 'Nome do pai'
+    } as Profile,
+    mae: {
+        primeiro_nome: 'Nome da mãe'
+    } as Profile,
     irmaos: []
 });
 

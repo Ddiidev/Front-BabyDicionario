@@ -19,14 +19,14 @@ import ToolButton from '@/components/ToolButton.vue';
 
             <div style="margin-top: 20px; justify-content: space-between; display: flex;" class="grid">
                 <router-link to="/register">
-                    <ToolButton style="width: 300px;" class="tooltip"
+                    <ToolButton class="tooltip"
                         data-tooltip="Realize o cadastro e comece registrar novas palavrinhas">
                         Registrar nova palavra
                     </ToolButton>
                 </router-link>
 
                 <router-link to="/profile/b396a08/Dante">
-                    <ToolButton style="width: 300px;" class="tooltip"
+                    <ToolButton class="tooltip"
                         data-tooltip="Também é possível compartilhar o perfil do seu bebê">
                         Veja um exemplo
                     </ToolButton>
