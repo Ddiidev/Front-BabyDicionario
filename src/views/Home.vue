@@ -6,7 +6,7 @@ import ToolButton from '@/components/ToolButton.vue';
 
 <template>
     <NavBar></NavBar>
-    <Background style="height: 900px;">
+    <Background>
         <main class="centralized-content">
             <img alt="logo" class="logo" src="@/assets/logo.png" width="150" height="150" />
 
@@ -19,15 +19,13 @@ import ToolButton from '@/components/ToolButton.vue';
 
             <div style="margin-top: 20px; justify-content: space-between; display: flex;" class="grid">
                 <router-link to="/register">
-                    <ToolButton class="tooltip"
-                        data-tooltip="Realize o cadastro e comece registrar novas palavrinhas">
+                    <ToolButton class="tooltip" data-tooltip="Realize o cadastro e comece registrar novas palavrinhas">
                         Registrar nova palavra
                     </ToolButton>
                 </router-link>
 
                 <router-link to="/profile/b396a08/Dante">
-                    <ToolButton class="tooltip"
-                        data-tooltip="Também é possível compartilhar o perfil do seu bebê">
+                    <ToolButton class="tooltip" data-tooltip="Também é possível compartilhar o perfil do seu bebê">
                         Veja um exemplo
                     </ToolButton>
                 </router-link>
@@ -43,5 +41,6 @@ import ToolButton from '@/components/ToolButton.vue';
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 </style>

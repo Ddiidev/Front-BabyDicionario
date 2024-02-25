@@ -1,4 +1,4 @@
-export interface Profile {
+export interface IProfile {
     id?: string
     apelido: string
     primeiro_nome: string
@@ -10,8 +10,8 @@ export interface Profile {
     altura: number
     cor: string
     tipo_sanguineo: string
-    pai?: Profile
-    mae?: Profile
-    irmaos: Profile[]
+    pai?: IProfile
+    mae?: IProfile
+    irmaos: IProfile[]
   }
   

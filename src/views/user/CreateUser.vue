@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import NavBar from '@/components/NavBar.vue';
+import { setSelfComponent, current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch, codeVerificationMatch, form_data, toastData, dataValida } from './CreateUser';
 import ToolButton from '@/components/ToolButton.vue';
-import { current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch, codeVerificationMatch, form_data } from './CreateUser';
 import * as ResponsiveUI from './ResponsiveUI';
-
+import NavBar from '@/components/NavBar.vue';
+import Toast from '@/components/Toast.vue';
 </script>
 
 <template>
     <NavBar hideCreateAcount></NavBar>
     <main style="padding-left: 3%; padding-right: 3%;" class="main container-fluid">
+        <Toast v-for="(toast) in toastData.toasts.value" :title="toast.title" :message="toast.message" :show="toast.show"
+            @closeButton="toastData.removeMessage(toast)"></Toast>
         <div class="grid">
             <article id="side" style="justify-self: center; text-align: center;">
                 <header>
@@ -24,10 +26,20 @@ import * as ResponsiveUI from './ResponsiveUI';
                     <fieldset v-if="current_step === 1">
                         <label>
                             Como gostaria de ser chamado?
-                            <input style="margin-top: 3%;" name="first_name" placeholder="Primeiro nome"
-                                autocomplete="given-name" v-model="form_data.primeiro_nome" />
-                            <small>Dica: aqui é o nome do papai ou da mamã. Logo poderá adicionar o perfil do seu
+                            <input ref="inPrimeiroNome" style="margin-top: 3%;" name="first_name"
+                                placeholder="Primeiro nome" autocomplete="given-name" v-model="form_data.primeiro_nome" />
+                            <small>Dica: aqui é o nome do papai ou da mamãe. Logo poderá adicionar o perfil do seu
                                 baby</small>
+                        </label>
+
+                        <label>
+                            <div v-if="form_data.primeiro_nome !== ''">
+                                {{ form_data.primeiro_nome }}, informe sua idade:
+                            </div>
+                            <input type="date" name="date" aria-label="Date" v-model="form_data.data_nascimento"
+                                aria-describedby="valid-data-nascimento" :aria-invalid="!dataValida()" />
+
+                            <small id="valid-data-nascimento"> {{ !dataValida() ? "Por favor insira uma data de nascimento válida" : "" }} </small>
                         </label>
 
                         <fieldset>
@@ -44,8 +56,8 @@ import * as ResponsiveUI from './ResponsiveUI';
                     <fieldset v-if="current_step === 2">
                         <label>
                             Informe um e-mail
-                            <input v-model="form_data.email" name="email" placeholder="E-mail de login" type="email"
-                                autocomplete="email" />
+                            <input ref="inEmail" v-model="form_data.email" name="email" placeholder="E-mail de login"
+                                type="email" autocomplete="email" />
                             <input v-model="form_data.senha" name="pass" placeholder="Digite sua senha de acesso"
                                 type="password" aria-label="Password" :aria-invalid="!passwordMatch()"
                                 aria-describedby="valid-pass" />
@@ -72,15 +84,15 @@ import * as ResponsiveUI from './ResponsiveUI';
                             <h4>Foi enviado um código para seu e-mail</h4>
 
                             <input v-model="form_data.codigoConfirmacao" placeholder="Digite o código enviado"
-                                aria-describedby="valid-code" :aria-invalid="!codeVerificationMatch()"
+                                aria-describedby="valid-code" :aria-invalid="!form_data.codigoValido"
                                 aria-label="Password" />
-                            <small id="valid-code"> {{ !codeVerificationMatch() ? "Código inválido" : "Perfeito!!" }}
+                            <small id="valid-code"> {{ form_data.codigoValido ? "Perfeito!!" : "Código inválido" }}
                             </small>
                         </label>
                     </fieldset>
 
                     <ToolButton :onclick="prevStep" v-if="current_step > 1"> &lt;&lt; Voltar</ToolButton>
-                    <ToolButton v-if="current_step == 4">Verificar código</ToolButton>
+                    <ToolButton :onclick="codeVerificationMatch" v-if="current_step == 4">Verificar código</ToolButton>
                     <ToolButton v-if="current_step != 4" :onclick="nextStep">Avançar >></ToolButton>
                 </label>
             </article>
@@ -106,8 +118,10 @@ import * as ResponsiveUI from './ResponsiveUI';
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 export default defineComponent({
     mounted() {
+        setSelfComponent(this);
         ResponsiveUI.calculateView(this);
         window.addEventListener("resize", this.EventHandleResize);
     },

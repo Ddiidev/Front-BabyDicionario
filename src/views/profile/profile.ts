@@ -1,18 +1,41 @@
-import type { Profile } from '@/models/profile';
+import type { IContractApi } from '@/contracts/api/contractApi'
+import type { IProfile } from '@/models/profile';
+import { refreshToken } from '@/auth/auth';
+import getToken from '@/constants/token';
 import confs from '@/constants/conf';
-import axios from 'axios';
 import { reactive } from 'vue';
+import axios from 'axios';
 
-export async function getProfile(id: string): Promise<Profile> {
-    let result = {} as Profile;
+export async function getProfile(id: string): Promise<IProfile> {
+    let result = {} as IProfile;
     try{
-        result = await axios.get(`${confs.server}/profile/${id}`);
-    } catch {}
+        debugger;
+        const tok = getToken();
+
+        const current_id = localStorage.getItem('current_id');
+        const name = localStorage.getItem('name');
+
+        const res = await axios.get<IContractApi<IProfile>>(`${confs.server}/profile/${current_id}/${name}`, {
+            headers: { Authorization: `Bearer ${tok.access_token}` }
+        })
+
+        result = res.data.content ?? {} as IProfile;
+    } catch (err: any) {
+        if (err.response.status == 401){
+            try{
+                await refreshToken();
+                
+                return await getProfile(id);
+            } catch {
+                // Rotear para tela de login
+            }
+        }
+    }
 
     return result;
 }
 
-export let currentProfile = reactive<Profile>({
+export let currentProfile = reactive<IProfile>({
     apelido: "Pitxhico",
     primeiro_nome: "Dante",
     idade: 2.3,
@@ -25,10 +48,10 @@ export let currentProfile = reactive<Profile>({
     tipo_sanguineo: '',
     pai: {
         primeiro_nome: 'Nome do pai'
-    } as Profile,
+    } as IProfile,
     mae: {
         primeiro_nome: 'Nome da mãe'
-    } as Profile,
+    } as IProfile,
     irmaos: []
 });
 
