@@ -1,8 +1,7 @@
-
 import type { IConfirmationEmailByCode } from '@/contracts/confirmationEmail/confirmationEmailByCode'
 import type { IContractApi, IContractApiNoContent } from '@/contracts/api/contractApi'
 import type { IContractEmail } from '@/contracts/confirmationEmail/ConfirmationEmail'
-import { Responsavel } from "@/contracts/contracts_shared/responsavel"
+import { Responsible } from "@/contracts/contracts_shared/responsavel"
 import type { ITokenContract } from '@/contracts/tokenJwt/tokenJwt'
 import { StatusContractApi } from '@/contracts/api/contractApi'
 import { HandleDataToast } from '@/components/HandleToast';
@@ -28,6 +27,12 @@ export interface ICreateUser {
     codigoValido: boolean
 }
 
+interface IStateModal {
+    message: string,
+    show: boolean
+}
+
+export let modal = { show: false } as IStateModal;
 export let toastData = new HandleDataToast();
 export const final_step = 4;
 export let current_step = ref(1);
@@ -48,6 +53,11 @@ export function checkedPai() {
     form_data.mae = false;
 }
 
+export function setModal(value: boolean) {
+    modal.show = value;
+    selfComponent.$forceUpdate();
+}
+
 export function checkedMae() {
     form_data.pai = false;
     form_data.mae = true;
@@ -63,22 +73,22 @@ export function passwordMatch(): boolean {
 async function sendEmail() {
     try {
         //TODO: Melhorar
-        const responsavel: Responsavel = form_data.pai ? Responsavel.pai : Responsavel.mae;
+        const responsavel: Responsible = form_data.pai ? Responsible.pai : Responsible.mae;
 
         const contract: IContractEmail = {
             email: form_data.email,
-            data_nascimento: new Date(form_data.data_nascimento),
-            primeiro_nome: form_data.primeiro_nome,
-            responsavel: responsavel,
-            senha: form_data.senha
+            birth_date: new Date(form_data.data_nascimento),
+            first_name: form_data.primeiro_nome,
+            responsible: responsavel,
+            password: form_data.senha
         };
 
-        const result: IContractApiNoContent = await axios.post(`${confs.server}/user/create-user/send-code-confirmation`, contract);
+        const result = await axios.post<IContractApiNoContent>(`${confs.server}/user/create/send-code`, contract);
 
-        if (result.status == StatusContractApi.error) {
+        if (result.data.status == StatusContractApi.error) {
             toastData.addMessage({
                 title: "Email de confirmação",
-                message: result.message
+                message: result.data.message
             })
         } else {
             toastData.addMessage({
@@ -86,8 +96,12 @@ async function sendEmail() {
                 message: "O email de confirmação foi enviado com sucesso!"
             })
         }
-    } catch {
-
+    } catch (err: any) {
+        if (err.response.status == 409) {
+            modal.show = true;
+            modal.message = err.response.data.message;
+            prevStep();
+        }
     }
 }
 
@@ -102,7 +116,6 @@ export async function codeVerificationMatch(): Promise<void> {
 
         const result: IContractApi<ITokenContract> = (await axios.post(`${confs.server}/confirmation`, contract)).data;
 
-        debugger;
         if (result.status == StatusContractApi.info) {
             localStorage.setItem('access_secure', JSON.stringify(result.content))
 
@@ -144,7 +157,7 @@ export function nextStep() {
     }
 
     sessionStorage.setItem('user_name', form_data.primeiro_nome);
-    sessionStorage.setItem('responsavel', form_data.pai ? Responsavel.pai.toString() : Responsavel.mae.toString());
+    sessionStorage.setItem('responsavel', form_data.pai ? Responsible.pai.toString() : Responsible.mae.toString());
     sessionStorage.setItem('email', form_data.email);
 
     current_step.value++;

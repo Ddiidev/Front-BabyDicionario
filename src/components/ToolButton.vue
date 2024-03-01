@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { defineComponent } from 'vue';
+
 interface ToolButtonProps {
     round?: boolean
     circle?: boolean
@@ -25,6 +27,12 @@ if (props.circle) {
     else
         style += 'padding: 25px;'
 }
+</script>
+<script lang="ts">
+export default defineComponent({
+  name: 'ToolButton',
+  // Outras opções do componente aqui
+});
 </script>
 
 <template>

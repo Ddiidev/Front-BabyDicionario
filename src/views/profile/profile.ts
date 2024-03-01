@@ -9,7 +9,6 @@ import axios from 'axios';
 export async function getProfile(id: string): Promise<IProfile> {
     let result = {} as IProfile;
     try{
-        debugger;
         const tok = getToken();
 
         const current_id = localStorage.getItem('current_id');

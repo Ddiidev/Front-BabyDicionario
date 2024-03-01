@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<IToastProps>(), {
     flex-direction: column;
     gap: 10px;
     width: 20%;
-    z-index: 1000;
+    z-index: 1003;
     transition: right 0.8s ease-in-out;
     backdrop-filter: blur(3px);
     border: 1px solid #feb1a6;

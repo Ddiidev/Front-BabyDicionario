@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Background from '@/components/Background.vue';
-import NavBar from '@/components/NavBar.vue';
 import ToolButton from '@/components/ToolButton.vue';
+import NavBar from '@/components/NavBar.vue';
 </script>
 
 <template>
+    
     <NavBar></NavBar>
     <Background>
         <main class="centralized-content">

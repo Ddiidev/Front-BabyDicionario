@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { setSelfComponent, current_step, nextStep, prevStep, checkedPai, checkedMae, passwordMatch, codeVerificationMatch, form_data, toastData, dataValida } from './CreateUser';
+import {
+    setSelfComponent, current_step, nextStep, prevStep,
+    checkedPai, checkedMae, passwordMatch, codeVerificationMatch,
+    form_data, toastData, dataValida, modal, setModal
+} from './CreateUser';
 import ToolButton from '@/components/ToolButton.vue';
 import * as ResponsiveUI from './ResponsiveUI';
 import NavBar from '@/components/NavBar.vue';
@@ -11,6 +15,21 @@ import Toast from '@/components/Toast.vue';
     <main style="padding-left: 3%; padding-right: 3%;" class="main container-fluid">
         <Toast v-for="(toast) in toastData.toasts.value" :title="toast.title" :message="toast.message" :show="toast.show"
             @closeButton="toastData.removeMessage(toast)"></Toast>
+
+        <dialog v-if="modal.show" open>
+            <article class="default-modal">
+                <header>
+                    <ToolButton @click='setModal(false)' style="display: block; margin-left: auto;" aria-label="Close" rel="prev">✕</ToolButton>
+                    <p>
+                        <strong>📩 Aparentemente esse email já foi cadastrado.</strong>
+                    </p>
+                </header>
+                <p>
+                    {{ modal.message }}
+                </p>
+            </article>
+        </dialog>
+
         <div class="grid">
             <article id="side" style="justify-self: center; text-align: center;">
                 <header>

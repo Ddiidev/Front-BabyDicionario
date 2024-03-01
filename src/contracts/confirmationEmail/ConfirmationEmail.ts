@@ -1,9 +1,9 @@
-import type { Responsavel } from "@/contracts/contracts_shared/responsavel"
+import type { Responsible } from "@/contracts/contracts_shared/responsavel"
 
-export interface ssssssssssssscIContractEmail {
-    primeiro_nome: string
-    responsavel: Responsavel
-    data_nascimento: Date
+export interface IContractEmail {
+    first_name: string
+    responsible: Responsible
+    birth_date: Date
     email: string
-    senha: string
+    password: string
 }
