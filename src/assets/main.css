@@ -6,9 +6,13 @@
     margin-top: 150px;
 }
 
-.default-modal {
+.default-border {
     border: 1px solid #feb1a6;
     box-shadow: 0 0 5px #feb1a6;
+}
+
+[data-tooltip]:not(a,button,input) { 
+    border-bottom: unset;
 }
 
 :root:not([data-theme=dark]), [data-theme=light] {

@@ -2,13 +2,10 @@
 import ToolButton from '@/components/ToolButton.vue';
 import EyeClose from '@/components/icons/EyeClose.vue';
 import EyeOpen from '@/components/icons/EyeOpen.vue';
+// import InputPassword from '@/components/InputPassword.vue';
 import * as LoginImpl from './Login'
 
-interface ILogin {
-    tagRef: string | undefined
-}
-
-const props = withDefaults(defineProps<ILogin>(), {
+const props = withDefaults(defineProps<{tagRef: string}>(), {
     tagRef: undefined
 });
 </script>
@@ -42,11 +39,12 @@ const props = withDefaults(defineProps<ILogin>(), {
                                 <EyeOpen v-if="visiblePass"></EyeOpen>
                             </button>
                         </fieldset>
+                        <!-- <InputPassword :passwordValidated="LoginImpl.invalidPassword"></InputPassword> -->
                         <small class="pico-color-red-600"> {{ LoginImpl.loginData.messageError }}</small>
                         <a class="secondary" href="#esqueceu-a-senha"><small>Esqueceu a senha?</small></a>
                     </label>
                 </fieldset>
-                
+
                 <hr />
             </form>
 
@@ -56,13 +54,14 @@ const props = withDefaults(defineProps<ILogin>(), {
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+// import InputPassword from '@/components/InputPassword.vue';
 
 export default defineComponent({
     data() {
         return {
             email: LoginImpl.loginData.email,
-            password: LoginImpl.loginData.password,
+            password: ref(LoginImpl.loginData.password),
             invalidEmail: LoginImpl.loginData.invalidEmail,
             invalidPassword: LoginImpl.loginData.invalidPassword,
             visiblePass: false
@@ -74,9 +73,7 @@ export default defineComponent({
                 LoginImpl.setThis(this);
                 LoginImpl.mounted();
             });
-        } catch {}
-    },
-    unmounted() {
+        } catch { }
     },
     watch: LoginImpl.watch(),
     methods: {

@@ -8,6 +8,7 @@ import { Emitter } from '@/utils/emitter';
 import confs from '@/constants/conf';
 import { ref, type Ref } from "vue";
 import router from "@/router";
+import { headerAuthorization } from '@/auth/auth';
 
 export let toastData = new HandleDataToast();
 export let visibleLogin = false;
@@ -17,9 +18,9 @@ export function setThis(me: any) {
     self = me;
 }
 
-interface ILogin {
+export interface ILogin {
     email: Ref<string | undefined>,
-    password: Ref<string | undefined>,
+    password: Ref<string>,
     invalidEmail: Ref<boolean | undefined>,
     invalidPassword: Ref<boolean | undefined>,
     messageError: string
@@ -27,7 +28,7 @@ interface ILogin {
 
 export let loginData: ILogin = {
     email: ref(undefined),
-    password: ref(undefined),
+    password: ref(''),
     invalidEmail: ref(undefined),
     invalidPassword: ref(undefined),
     messageError: ''
@@ -40,7 +41,7 @@ export function mounted() {
         tagRef.addEventListener('click', self.setVisible);
     });
 
-    Emitter.listen('switchVisible', (e: null) => {
+    Emitter.listen('switchVisibleLogin', (e: null) => {
         visibleLogin = !visibleLogin;
         setVisible();
     });
@@ -65,7 +66,7 @@ function invalidPassword(): boolean {
         loginData.invalidPassword.value = true;
         return loginData.invalidPassword.value;
     }
-    
+
     loginData.invalidPassword.value = false;
     return loginData.invalidPassword.value;
 }
@@ -95,16 +96,36 @@ export async function login() {
             password: loginData.password.value
         } as IContractEmail;
 
-        const result = await axios.post<IContractApi<ITokenContract>>(`${confs.server}/user/login`, contract);
+        const resultLogin = await axios.post<IContractApi<ITokenContract>>(`${confs.server}/user/login`, contract);
+        
+        localStorage.setItem('access_secure', JSON.stringify(resultLogin.data.content))
+        if (resultLogin.data.status == StatusContractApi.info) {
+            const resultDetails = await axios.get<IContractApi<IContractUser>>(`${confs.server}/user/details`, {
+                headers: headerAuthorization()
+            });
 
-        if (result.data.status == StatusContractApi.info) {
+            if (resultDetails.data.status == StatusContractApi.info) {
+                localStorage.setItem('name', '')
+                localStorage.setItem('current_id', '')
+                sessionStorage.setItem('email', resultDetails.data.content?.email.toString() ?? '');
+                sessionStorage.setItem('responsavel', resultDetails.data.content?.responsible.toString() ?? '');
+                sessionStorage.setItem('user_name', resultDetails.data.content?.first_name.toString() ?? '');
 
+                loginData = {
+                    email: ref(undefined),
+                    password: ref(''),
+                    invalidEmail: ref(undefined),
+                    invalidPassword: ref(undefined),
+                    messageError: ''
+                };
+
+                closePanel();
+            }
         }
 
-        localStorage.setItem('access_secure', JSON.stringify(result.data.content))
     } catch (err: any) {
         if (err instanceof AxiosError) {
-            const error : IContractApiNoContent = (err as AxiosError).response?.data as any;
+            const error: IContractApiNoContent = (err as AxiosError).response?.data as any;
             loginData.messageError = error.message
         }
     }

@@ -17,11 +17,11 @@ import Toast from '@/components/Toast.vue';
             @closeButton="toastData.removeMessage(toast)"></Toast>
 
         <dialog v-if="modal.show" open>
-            <article class="default-modal">
+            <article class="default-border">
                 <header>
                     <ToolButton @click='setModal(false)' style="display: block; margin-left: auto;" aria-label="Close" rel="prev">✕</ToolButton>
                     <p>
-                        <strong>📩 Aparentemente esse email já foi cadastrado.</strong>
+                        <strong>📩 Aparentemente esse email já foi registrado.</strong>
                     </p>
                 </header>
                 <p>
@@ -84,8 +84,7 @@ import Toast from '@/components/Toast.vue';
                             <input v-model="form_data.senhaConfirm" name="pass_confirm" placeholder="Confirme sua senha"
                                 type="password" aria-describedby="valid-pass" :aria-invalid="!passwordMatch()"
                                 aria-label="Password" />
-                            <small id="valid-pass"> {{ !passwordMatch() ? "Senhas não coincidem" : "Perfeito!" }}
-                            </small>
+                            <small id="valid-pass"> {{ !passwordMatch() ? "Senhas não coincidem" : "Perfeito!" }}</small>
                         </label>
                     </fieldset>
 
@@ -105,8 +104,7 @@ import Toast from '@/components/Toast.vue';
                             <input v-model="form_data.codigoConfirmacao" placeholder="Digite o código enviado"
                                 aria-describedby="valid-code" :aria-invalid="!form_data.codigoValido"
                                 aria-label="Password" />
-                            <small id="valid-code"> {{ form_data.codigoValido ? "Perfeito!!" : "Código inválido" }}
-                            </small>
+                            <small id="valid-code"> {{ form_data.codigoValido ? "Perfeito!!" : "Código inválido" }} </small>
                         </label>
                     </fieldset>
 

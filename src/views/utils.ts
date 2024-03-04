@@ -18,4 +18,4 @@ export function getResolution(): ICurrentResolution {
         height,
         width
     }
-  }
+}
