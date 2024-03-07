@@ -1,7 +1,7 @@
 import { type UserLogged, getResponsibleValue } from '@/models/userLogged';
 import axios, { AxiosHeaders, type RawAxiosRequestHeaders } from 'axios';
 import { Responsible } from '@/contracts/contracts_shared/responsavel';
-import type { ITokenContract } from '@/contracts/tokenJwt/tokenJwt';
+import type { ITokenContract } from '@/contracts/token/tokenJwt';
 import type { IContractApi } from '@/contracts/api/contractApi'
 import confs from '@/constants/conf';
 
@@ -23,6 +23,14 @@ export function headerAuthorization(): RawAxiosRequestHeaders | AxiosHeaders {
     return {
         'refresh-token': token.refresh_token,
         Authorization: `Bearer ${token.access_token}`
+    }
+}
+
+export function headerAuthorizationRecovery(): RawAxiosRequestHeaders | AxiosHeaders {
+    let token: string = localStorage.getItem('access_recovery') ?? '';
+
+    return {
+        Authorization: `Bearer ${token}`
     }
 }
 

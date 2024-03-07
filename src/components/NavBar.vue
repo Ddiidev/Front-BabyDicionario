@@ -3,6 +3,14 @@ import UserLogged from '@/views/userLogged/UserLogged.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import Login from '@/views/login/Login.vue';
 import Toast from './Toast.vue';
+
+Emitter.listen('msg-login', (e: { msg: string, title: string, time?: number }) => {
+	toastData.addMessage({
+		message: e.msg,
+		title: e.title,
+		show: true
+	}, e.time);
+})
 </script>
 
 <template>
@@ -112,14 +120,6 @@ export default defineComponent({
 		this.menuDefault = getResolution().width > 530;
 		this.$forceUpdate();
 
-		Emitter.listen('msg-err-login', (e: string) => {
-			toastData.addMessage({
-				message: e,
-				title: 'Atenção',
-				show: true
-			});
-		})
-
 		setTimeout(() => {
 			try {
 				const btUserLogged = getComponent(this.$refs, 'btUserLogged')
@@ -185,13 +185,13 @@ export default defineComponent({
 
 .circular-image {
 	margin: 0px;
-    width: 50px;
-    padding: 0px;
-    height: 50px;
-    position: relative;
-    border-radius: 40%;
+	width: 50px;
+	padding: 0px;
+	height: 50px;
+	position: relative;
+	border-radius: 40%;
 	cursor: pointer;
-    transition: background-color 0.1s ease;
+	transition: background-color 0.1s ease;
 }
 
 .circular-image:hover {

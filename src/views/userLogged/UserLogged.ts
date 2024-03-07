@@ -1,15 +1,11 @@
-import type { IContractEmail as userLoggedImpl } from '@/contracts/confirmationEmail/ConfirmationEmail';
-import type { ITokenContract } from '@/contracts/tokenJwt/tokenJwt';
-import { type IContractApi, type IContractApiNoContent, StatusContractApi } from '@/contracts/api/contractApi';
 import { HandleDataToast } from '@/components/HandleToast';
 import { getResolution } from '@/views/utils';
 import axios, { AxiosError } from 'axios';
 import { Emitter } from '@/utils/emitter';
-import confs from '@/constants/conf';
 import { ref, type Ref } from "vue";
-import router from "@/router";
 import { UserLogged } from '@/models/userLogged';
 import * as user from '@/service/user/user';
+import router from '@/router';
 
 export let toastData = new HandleDataToast();
 export let visibleUserLogged = false;
@@ -19,7 +15,7 @@ export function setThis(me: any) {
     self = me;
 }
 
-export interface IUserLoggedData {
+interface IUserLoggedData {
     email: Ref<string | undefined>,
     password: Ref<string>,
     invalidEmail: Ref<boolean | undefined>,
@@ -49,6 +45,12 @@ export async function mounted() {
     });
 
     userLoggedData.userLogged = await user.dataCurrentUserLogged();
+}
+
+export function singOut() {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
 }
 
 export function setVisible() {

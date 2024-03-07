@@ -2,7 +2,7 @@ import type { IConfirmationEmailByCode } from '@/contracts/confirmationEmail/con
 import type { IContractApi, IContractApiNoContent } from '@/contracts/api/contractApi'
 import type { IContractEmail } from '@/contracts/confirmationEmail/ConfirmationEmail'
 import { Responsible } from "@/contracts/contracts_shared/responsavel"
-import type { ITokenContract } from '@/contracts/tokenJwt/tokenJwt'
+import type { ITokenContract } from '@/contracts/token/tokenJwt'
 import { StatusContractApi } from '@/contracts/api/contractApi'
 import { HandleDataToast } from '@/components/HandleToast';
 import confs from '@/constants/conf';

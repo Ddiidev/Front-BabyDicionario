@@ -41,7 +41,6 @@ export default defineComponent({
         visiblePass: Boolean
     },
     data() {
-        debugger;
         let validatedPassword = ref(false);
         let inputPasswordData: IInputPassword = {
             placeholder: this.placeholder,

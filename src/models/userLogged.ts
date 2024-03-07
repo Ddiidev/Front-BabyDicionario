@@ -1,5 +1,5 @@
 import { Responsible } from "@/contracts/contracts_shared/responsavel"
-import type { ITokenContract } from "@/contracts/tokenJwt/tokenJwt"
+import type { ITokenContract } from "@/contracts/token/tokenJwt"
 
 export class UserLogged {
     responsible?: Responsible

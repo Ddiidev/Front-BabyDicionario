@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { defineComponent } from 'vue';
 
-interface ToolButtonProps {
+const props = withDefaults(defineProps<{
     round?: boolean
     circle?: boolean
     small?: boolean
-}
-const props = withDefaults(defineProps<ToolButtonProps>(), {
+}>(), {
     round: true,
     circle: false,
     small: false

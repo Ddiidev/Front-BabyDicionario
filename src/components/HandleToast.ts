@@ -21,7 +21,7 @@ export class HandleDataToast {
             this.currIsVisible = false;
         };
 
-        if (this.toasts.value.length == 0) {
+        if (this.toasts.value == undefined || this.toasts.value.length == 0) {
             toastMessage.show = false;
             this.toasts.value.push(toastMessage);
             this.currIsVisible = true;

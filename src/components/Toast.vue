@@ -33,11 +33,15 @@ const props = withDefaults(defineProps<IToastProps>(), {
                 </ul>
             </nav>
         </header>
-        <div>{{ props.message }}</div>
+        <p class="text">{{ props.message }}</p>
     </article>
 </template>
   
 <style scoped>
+.text {
+    white-space: pre-line;
+}
+
 .toast {
     position: fixed;
     bottom: 5%;
@@ -45,7 +49,7 @@ const props = withDefaults(defineProps<IToastProps>(), {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 20%;
+    width: 25%;
     z-index: 1003;
     transition: right 0.8s ease-in-out;
     backdrop-filter: blur(3px);

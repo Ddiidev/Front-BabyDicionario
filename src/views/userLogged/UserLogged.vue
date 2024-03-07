@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import ToolButton from '@/components/ToolButton.vue';
-import EyeClose from '@/components/icons/EyeClose.vue';
-import EyeOpen from '@/components/icons/EyeOpen.vue';
 import * as userLoggedImpl from './UserLogged'
 
 const props = withDefaults(defineProps<{ tagRef: string }>(), {
@@ -27,7 +25,7 @@ const props = withDefaults(defineProps<{ tagRef: string }>(), {
                 <p class="h6"> {{ userLoggedImpl.userLoggedData.userLogged?.first_name }} </p>
             </header>
 
-            <table class="">
+            <table>
                 <tbody>
                     <tr>
                         <th scope="row">Nome</th>
@@ -48,7 +46,7 @@ const props = withDefaults(defineProps<{ tagRef: string }>(), {
             <hr />
 
             <div class="grid">
-                <ToolButton>
+                <ToolButton @click="singOut">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 24px; height: 24px; margin-bottom: 3px;"
                         viewBox="0 0 32 32">
                         <g id="_110_log-out-03" data-name="110 log-out-03">
@@ -104,6 +102,10 @@ export default defineComponent({
         handleSubmit(event: any) {
             event.preventDefault();
         },
+
+        singOut() {
+            userLoggedImpl.singOut();
+        }
     },
 });
 </script>
