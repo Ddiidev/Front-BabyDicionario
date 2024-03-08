@@ -2,10 +2,11 @@
 import Background from '@/components/Background.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import NavBar from '@/components/NavBar.vue';
+import confs from '@/constants/conf';
 </script>
 
 <template>
-    
+
     <NavBar></NavBar>
     <Background>
         <main class="centralized-content">
