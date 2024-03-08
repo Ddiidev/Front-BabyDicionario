@@ -79,4 +79,6 @@ export function quantidadeIrmaos(): string {
         return currentProfile.irmaos.length.toString();
 }
 
-currentProfile = Object.assign(currentProfile, await getProfile(localStorage.getItem('current_id')!))
+(async () => {
+    currentProfile = Object.assign(currentProfile, await getProfile(localStorage.getItem('current_id')!))
+})()
