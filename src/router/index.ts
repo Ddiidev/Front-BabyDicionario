@@ -1,7 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
+import { createRouter, createWebHashHistory , createWebHistory } from 'vue-router'
 const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -9,10 +8,12 @@ const router = createRouter({
     },
     {
       path: '/profile/:id/:name',
+      name: 'profile',
       component: () => import('@/views/profile/Profile.vue')
     },
     {
       path: '/createUser',
+      name: 'createUser',
       component: () => import('@/views/user/CreateUser.vue')
     }
   ]
