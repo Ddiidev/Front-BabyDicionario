@@ -114,13 +114,15 @@ export default defineComponent({
 .div-flutuante {
     padding: 10px;
     position: absolute;
-    width: min-content;
-    min-width: 30%;
+    /* width: 40vh; */
+    min-width: 38vh;
     border-radius: 15px;
     backdrop-filter: blur(45px);
     border: 1px solid #feb1a6;
     box-shadow: 0 0 5px #feb1a6;
 }
+
+
 
 .btClose {
     margin-right: 30px;
