@@ -31,4 +31,8 @@ export class Emitter {
             event(e as T);
         })
     }
+
+    static unlisten<T>(eventName: string): void {
+        this.emitter.off(eventName);
+    }
 }

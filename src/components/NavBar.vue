@@ -60,7 +60,7 @@ Emitter.listen('msg-login', (e: { msg: string, title: string, time?: number }) =
 						</li>
 						<li>
 							<router-link to="/createUser">
-								<ToolButton @click="switchVisibleLogin">Criar conta</ToolButton>
+								<ToolButton @click="createUserVisibleLoginFalse">Criar conta</ToolButton>
 							</router-link>
 						</li>
 					</nav>
@@ -150,6 +150,9 @@ export default defineComponent({
 				Emitter.emitt('login', btEntrar);
 			this.menuDefault = getResolution().width > 530;
 			this.$forceUpdate();
+		},
+		createUserVisibleLoginFalse() {
+			Emitter.emitt('switchVisibleLogin', false);
 		},
 		switchVisibleLogin() {
 			Emitter.emitt('switchVisibleLogin', null);

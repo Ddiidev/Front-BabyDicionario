@@ -57,10 +57,24 @@ export function mounted() {
         tagRef.addEventListener('click', self.setVisible);
     });
 
-    Emitter.listen('switchVisibleLogin', (e: null) => {
-        visibleLogin = !visibleLogin;
+    Emitter.listen('switchVisibleLogin', (e: boolean | null) => {
+        debugger;
+        if (e !== null)
+            visibleLogin = e;
+        else
+            visibleLogin = !visibleLogin;
         setVisible();
     });
+}
+
+export function unmounted() {
+    visibleLogin = false;
+    
+    setVisible();
+
+    Emitter.unlisten('login');
+
+    Emitter.unlisten('switchVisibleLogin');
 }
 
 export function watch() {

@@ -126,6 +126,9 @@ export default defineComponent({
             });
         } catch { }
     },
+    beforeUnmount() {
+        LoginImpl.unmounted();
+    },
     watch: LoginImpl.watch(),
     methods: {
         setVisible: LoginImpl.setVisible,
