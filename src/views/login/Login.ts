@@ -58,7 +58,6 @@ export function mounted() {
     });
 
     Emitter.listen('switchVisibleLogin', (e: boolean | null) => {
-        debugger;
         if (e !== null)
             visibleLogin = e;
         else

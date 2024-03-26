@@ -6,17 +6,20 @@
     margin-top: 150px;
 }
 
+.btn {
+    cursor: pointer;
+}
+
 .default-border {
     border: 1px solid #feb1a6;
     box-shadow: 0 0 5px #feb1a6;
 }
 
-[data-tooltip]:not(a,button,input) { 
+[data-tooltip]:not(a, button, input) {
     border-bottom: unset;
 }
 
 :root:not([data-theme=dark]), [data-theme=light] {
-    --pico-card-box-shadow: 5px;
     --pico-primary: #feb1a6;
     --pico-primary-background: #feb1a6;
     --pico-primary-hover: #b18a83;
@@ -28,6 +31,7 @@
 }
 
 :root {
+    background-color: #fff3e8;
     --pico-font-family: Dosis;
     --pico-border-radius: 0.8rem;
     --pico-typography-spacing-vertical: 0.3rem;

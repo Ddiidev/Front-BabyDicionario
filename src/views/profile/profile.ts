@@ -36,47 +36,47 @@ export async function getProfile(id: string): Promise<IProfile> {
 
 export let currentProfile = reactive<IProfile>({
     apelido: "Pitxhico",
-    primeiro_nome: "Dante",
-    idade: 2.3,
-    ultimo_nome: '',
-    data_nascimento: '05/08/2021',
-    peso: 11.5,
-    sexo: '',
-    altura: 0,
-    cor: '',
+    first_nam: "Dante",
+    age: 2.3,
+    last_name: '',
+    birth_date: '05/08/2021',
+    weight: 11.5,
+    sex: '',
+    height: 0,
+    color: '',
     tipo_sanguineo: '',
-    pai: {
-        primeiro_nome: 'Nome do pai'
+    father: {
+        first_nam: 'Nome do pai'
     } as IProfile,
-    mae: {
-        primeiro_nome: 'Nome da mãe'
+    mother: {
+        first_nam: 'Nome da mãe'
     } as IProfile,
-    irmaos: []
+    brothers: []
 });
 
 export function resenha(): string {
-    if (currentProfile.idade < 1)
-        return `${currentProfile.primeiro_nome} o RN mais lindo!`;
-    else if (currentProfile.idade < 3)
-        return `${currentProfile.primeiro_nome} está na fase da adolecência do bebê.\nBoa sorte!`;
+    if (currentProfile.age < 1)
+        return `${currentProfile.first_nam} o RN mais lindo!`;
+    else if (currentProfile.age < 3)
+        return `${currentProfile.first_nam} está na fase da adolecência do bebê.\nBoa sorte!`;
     else
-        return `${currentProfile.primeiro_nome} irá fazer perguntas que o papai e a mamãe não consegue imaginar!`;
+        return `${currentProfile.first_nam} irá fazer perguntas que o papai e a mamãe não consegue imaginar!`;
 }
 
 export function idadeBebe(): string {
-    if (currentProfile.idade < 1)
-        return `${currentProfile.idade} (RN)`
-    else if (currentProfile.idade < 2)
-        return `${currentProfile.idade} ano`
+    if (currentProfile.age < 1)
+        return `${currentProfile.age} (RN)`
+    else if (currentProfile.age < 2)
+        return `${currentProfile.age} ano`
     else
-        return `${currentProfile.idade} anos`
+        return `${currentProfile.age} anos`
 }
 
 export function quantidadeIrmaos(): string {
-    if (currentProfile.irmaos.length == 0)
+    if (currentProfile.brothers.length == 0)
         return "Nenhum";
     else
-        return currentProfile.irmaos.length.toString();
+        return currentProfile.brothers.length.toString();
 }
 
 (async () => {

@@ -1,8 +1,8 @@
 
 interface IContractUser {
-	first_name:  string
-	last_name:   string
+	first_name: string
+	last_name: string
 	responsible: number
-	date_birth:  Date
-	email:       string
+	birth_date: Date
+	email: string
 }

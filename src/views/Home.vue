@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import Background from '@/components/Background.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import NavBar from '@/components/NavBar.vue';
-import confs from '@/constants/conf';
+import { userLogged } from '@/auth/auth';
+import router from '@/router';
+
+if (userLogged()) {
+    router.push({
+        path: '/userHome'
+    })
+}
 </script>
 
 <template>
