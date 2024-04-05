@@ -127,7 +127,7 @@ export async function codeVerificationMatch(): Promise<void> {
             }, 5000)
 
             setTimeout(() => {
-                router.push({ path: `/profile/${form_data.primeiro_nome}` })
+                router.push({ path: `/` })
             }, 3000);
         } else {
             toastData.addMessage({
