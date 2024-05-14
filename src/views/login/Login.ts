@@ -50,7 +50,9 @@ export let loginData: ILogin = {
     flowPasswordReset: ref(1)
 };
 
-export function mounted() {
+export function mounted(self: any) {
+    setThis(self);
+    
     Emitter.listen('login', (e: HTMLElement) => {
         tagRef = e;
         tagRef.removeEventListener('click', self.setVisible);

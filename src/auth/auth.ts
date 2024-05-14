@@ -2,22 +2,35 @@ import { type UserLogged, getResponsibleValue } from '@/models/userLogged';
 import axios, { AxiosHeaders, type RawAxiosRequestHeaders } from 'axios';
 import { Responsible } from '@/contracts/contracts_shared/responsavel';
 import type { ITokenContract } from '@/contracts/token/tokenJwt';
-import type { IContractApi } from '@/contracts/api/contractApi'
+import { StatusContractApi, type IContractApi } from '@/contracts/api/contractApi'
 import confs from '@/constants/conf';
 
 export async function refreshToken(): Promise<void> {
     let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
 
     const res = await axios.get<IContractApi<ITokenContract>>(`${confs.server}/auth/refresh-token`, {
-        headers: headerAuthorization()
+        headers: headerAuthorizationAndRefreshToken()
     })
 
     token = res.data.content ?? {} as ITokenContract;
+
+    if (res.data.status == StatusContractApi.error) {
+        localStorage.removeItem('access_secure');
+        throw new Error('Falha ao gerar um novo token'); // TODO corrigir, para notificar em tela.
+    }
 
     localStorage.setItem('access_secure', JSON.stringify(token));
 }
 
 export function headerAuthorization(): RawAxiosRequestHeaders | AxiosHeaders {
+    let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
+
+    return {
+        Authorization: `Bearer ${token.access_token}`
+    }
+}
+
+export function headerAuthorizationAndRefreshToken(): RawAxiosRequestHeaders | AxiosHeaders {
     let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
 
     return {

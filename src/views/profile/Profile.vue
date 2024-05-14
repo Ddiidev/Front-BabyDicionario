@@ -15,7 +15,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                 <header>
                     <img style="margin-top: 0px;" class="circular-image" src="@/assets/imagens-temp/dante.jpg" />
                     <hgroup>
-                        <h2>{{ currentProfile.first_nam }}</h2>
+                        <h2>{{ currentProfile.first_name }}</h2>
                         <p>{{ currentProfile.age }} ano(s)</p>
                     </hgroup>
                 </header>
@@ -25,7 +25,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                         <tbody>
                             <tr>
                                 <th>Vulgo</th>
-                                <td style="text-align: end;">{{ currentProfile.apelido }}</td>
+                                <td style="text-align: end;">{{ currentProfile.surname }}</td>
                             </tr>
                             <tr>
                                 <th>Irmãos</th>
@@ -41,7 +41,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             </tr>
                             <tr>
                                 <th>Nascimento</th>
-                                <td style="text-align: end;">{{ currentProfile.birth_date }}</td>
+                                <td style="text-align: end;">{{ currentProfile._birth_date }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -57,7 +57,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/milca.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>{{ currentProfile.mother?.first_nam }}</h2>
+                                <h2>{{ currentProfile.mother?.first_name }}</h2>
                                 <p>Mãe</p>
                             </hgroup>
                         </div>
@@ -65,7 +65,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/andré.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>{{ currentProfile.father?.first_nam }}</h2>
+                                <h2>{{ currentProfile.father?.first_name }}</h2>
                                 <p>Pai</p>
                             </hgroup>
                         </div>
@@ -103,7 +103,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             </div>
 
                             <blockquote>
-                                Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.apelido }}
+                                Aqui você consegue vê os irmãozinhos do(a) {{ currentProfile.surname }}
                                 <footer>
                                     Essa é a área dos parentes
                                 </footer>

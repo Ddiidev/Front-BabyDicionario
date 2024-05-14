@@ -142,7 +142,7 @@ export default defineComponent({
         ResponsiveUI.calculateView(this);
         window.addEventListener("resize", this.EventHandleResize);
     },
-    unmounted() {
+    profileEditImpl() {
         window.removeEventListener("resize", this.EventHandleResize);
     },
     methods: {

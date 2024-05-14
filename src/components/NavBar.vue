@@ -14,7 +14,7 @@ Emitter.listen('msg-login', (e: { msg: string, title: string, time?: number }) =
 </script>
 
 <template>
-	<header style="position: fixed; height: 100px; border-bottom: 2px solid #b19d95;"
+	<header style="position: fixed; height: 100px; border-bottom: 2px solid #b19d95; z-index: 1;"
 		class="pico-background-pumpkin-100 pico-color-pumpkin-100 nav">
 		<div class="container">
 			<nav style="margin-top: -10px; margin-right: 15px;">
@@ -49,7 +49,6 @@ Emitter.listen('msg-login', (e: { msg: string, title: string, time?: number }) =
 							</li>
 						</ul>
 					</details>
-
 					<nav v-else>
 						<li>
 							<ToolButton @click="switchVisibleLogin" ref="btEntrar">
@@ -137,7 +136,7 @@ export default defineComponent({
 			userLogged: ref(false)
 		}
 	},
-	unmounted() {
+	profileEditImpl() {
 		window.removeEventListener("resize", this.EventHandleResize);
 	},
 	methods: {

@@ -83,7 +83,7 @@ async function sendEmail() {
             password: form_data.senha
         };
 
-        const result = await axios.post<IContractApiNoContent>(`${confs.server}/user/create/send-code`, contract);
+        const result = await axios.post<IContractApiNoContent>(`${confs.server}/user/create/send-code-confirmation`, contract);
 
         if (result.data.status == StatusContractApi.error) {
             toastData.addMessage({

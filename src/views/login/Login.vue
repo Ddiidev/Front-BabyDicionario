@@ -121,8 +121,7 @@ export default defineComponent({
     mounted() {
         try {
             this.$nextTick(() => {
-                LoginImpl.setThis(this);
-                LoginImpl.mounted();
+                LoginImpl.mounted(this);
             });
         } catch { }
     },

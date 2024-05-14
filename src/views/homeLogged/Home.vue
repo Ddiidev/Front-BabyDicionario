@@ -5,7 +5,7 @@ import { userLogged } from '@/auth/auth';
 import router from '@/router';
 import Settings from '@/components/icons/Settings.vue';
 import EyeView from '@/components/icons/EyeView.vue';
-import { useRoute } from 'vue-router';
+import * as HomeImpl from './Home';
 
 
 // localStorage.setItem('current_id', useRoute().params.uuid.toString())
@@ -22,14 +22,14 @@ if (!userLogged()) {
     <main class="main container-fluid">
 
         <div class="center grid">
-            <article style="width: 15em;">
+            <article v-if="HomeImpl.containMother()" style="width: 15em;">
                 <header>
                     <div style="display: flex; justify-content: end;">
-                        <Settings class="btn"></Settings>
+                        <Settings @click="HomeImpl.openSettingsMother()" class="btn"></Settings>
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image" src="@/assets/imagens-temp/milca.jpg"
+                            <img class="circular-image default-border" src="@/assets/imagens-temp/milca.jpg"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -37,20 +37,20 @@ if (!userLogged()) {
 
                 <body>
                     <div style="text-align: center;">
-                        <h3>Milca</h3>
+                        <h3>{{ HomeImpl.data.profile.mother?.first_name }}</h3>
                         <p>Mãe</p>
                     </div>
                 </body>
             </article>
 
-            <article style="width: 15em;">
+            <article v-if="HomeImpl.containFater()" style="width: 15em;">
                 <header>
                     <div style="display: flex; justify-content: end;">
-                        <Settings class="btn"></Settings>
+                        <Settings @click="HomeImpl.openSettingsFather()" class="btn"></Settings>
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image" src="@/assets/imagens-temp/andré.jpg"
+                            <img class="circular-image default-border" src="@/assets/imagens-temp/andré.jpg"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -58,7 +58,7 @@ if (!userLogged()) {
 
                 <body>
                     <div style="text-align: center;">
-                        <h3>André</h3>
+                        <h3>{{ HomeImpl.data.profile.father?.first_name }}</h3>
                         <p>Pai</p>
                     </div>
                 </body>
@@ -73,7 +73,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image" src="@/assets/baby-voice-up.ico"
+                            <img class="circular-image " src="@/assets/baby-voice-up.ico"
                             style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -91,6 +91,26 @@ if (!userLogged()) {
         </div>
     </main>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+    mounted() {
+        try {
+            this.$nextTick(() => {
+                HomeImpl.mounted(this);
+            });
+        } catch { }
+    },
+    profileEditImpl() {
+        // window.removeEventListener("resize", this.EventHandleResize);
+    },
+    methods: {
+        // EventHandleResize(e: Event) {},
+    },
+});
+</script>
 
 <style scoped>
 .center {
