@@ -42,6 +42,25 @@ if (!userLogged()) {
                     </div>
                 </body>
             </article>
+            <article v-else style="width: 15em;">
+                <header>
+                    <div style="display: flex; justify-content: end;">
+                        <Settings @click="HomeImpl.openSettingsMother(true)" class="btn"></Settings>
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <div class="grid">
+                            <img class="circular-image default-border" opacity src="@/assets/imagens-temp/female-user.jpeg"
+                                style="width: 8em; height: 8em;" />
+                        </div>
+                    </div>
+                </header>
+
+                <body>
+                    <div style="text-align: center;">
+                        <h3>Adicionar Mãe</h3>
+                    </div>
+                </body>
+            </article>
 
             <article v-if="HomeImpl.containFater()" style="width: 15em;">
                 <header>
@@ -60,6 +79,25 @@ if (!userLogged()) {
                     <div style="text-align: center;">
                         <h3>{{ HomeImpl.data.profile.father?.first_name }}</h3>
                         <p>Pai</p>
+                    </div>
+                </body>
+            </article>
+            <article v-else style="width: 15em;">
+                <header>
+                    <div style="display: flex; justify-content: end;">
+                        <Settings @click="HomeImpl.openSettingsFather(true)" class="btn"></Settings>
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <div class="grid">
+                            <img class="circular-image default-border" opacity src="@/assets/imagens-temp/male-user.jpeg"
+                                style="width: 8em; height: 8em;" />
+                        </div>
+                    </div>
+                </header>
+
+                <body>
+                    <div style="text-align: center;">
+                        <h3>Adicionar Pai</h3>
                     </div>
                 </body>
             </article>
@@ -94,6 +132,7 @@ if (!userLogged()) {
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Plus from '@/components/icons/plus.vue';
 
 export default defineComponent({
     mounted() {
@@ -139,5 +178,9 @@ export default defineComponent({
     align-self: center;
     object-fit: cover;
     border-radius: 40%;
+}
+
+.circular-image[opacity] {
+    opacity: 0.7;
 }
 </style>
