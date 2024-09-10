@@ -13,7 +13,7 @@ import axios from "axios";
 export async function loadFamilyProfile() {
     let dataProfile: IProfile = {} as IProfile;
     try {
-        const userDetails = await axios.get<IContractApi<IProfile>>(`${confs.server}/profile/details`, {
+        const userDetails = await axios.get<IContractApi<IProfile[]>>(`${confs.server}/profile/details-home`, {
             headers: auth.headerAuthorization()
         });
 
@@ -53,5 +53,35 @@ export async function saveProfile(profile: IProfile) {
             return await saveProfile(profile);
         }
     }
+}
 
+/**
+ * Cria um novo perfil fornecido fazendo uma requisição POST para o servidor.
+ *
+ * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
+ */
+export async function newProfile(profile: IProfile): Promise<IProfile> {
+    let result = {} as IProfile;
+    try {
+        const response = await axios.post<IContractApi<IProfile>>(`${confs.server}/profile/`,
+            profile,
+            {
+                headers: auth.headerAuthorization(),
+            }
+        );
+
+        if (response.data.status != StatusContractApi.info || response.data.content === undefined) {
+            throw response.data.message;
+        }
+
+        result = Object.assign(result, response.data.content!);
+    } catch (err: any) {
+        if (err.response.status = 401) {
+            await auth.refreshToken();
+
+            return await newProfile(profile);
+        }
+    }
+
+    return result;
 }

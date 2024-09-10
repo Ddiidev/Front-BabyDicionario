@@ -2,6 +2,7 @@ import { Responsible } from "@/contracts/contracts_shared/responsavel"
 import type { ITokenContract } from "@/contracts/token/tokenJwt"
 
 export class UserLogged {
+    uuid?: string
     responsible?: Responsible
     email: string = ''
     first_name: string = ''

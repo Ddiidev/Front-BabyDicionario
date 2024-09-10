@@ -1,3 +1,5 @@
+import type { Responsible } from "@/contracts/contracts_shared/responsavel"
+
 export interface IProfile {
   uuid?: string
   short_uuid: string
@@ -6,6 +8,7 @@ export interface IProfile {
   first_name: string
   last_name: string
   birth_date: number
+  responsible?: Responsible
   age: number
   weight: number
   sex: number

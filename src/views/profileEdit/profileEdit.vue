@@ -3,6 +3,8 @@ import ToolButton from '@/components/ToolButton.vue';
 import NavBar from '@/components/NavBar.vue';
 import { userLogged } from '@/auth/auth';
 import router from '@/router';
+import confs from '@/constants/conf';
+import { CurrentUserLogged } from '@/constants/userLogged';
 
 if (!userLogged()) {
     router.push({
@@ -22,8 +24,12 @@ if (!userLogged()) {
                     <div class="title-image">
                         <p class="center-text">{{ profileEditImpl.data.first_name }}</p>
                         <div class="edit_img" data-tooltip="Mudar a imagem" data-placement="bottom">
-                            <img class="circular-image default-border" style="width: 5em; height: 5em;"
-                                src="@/assets/imagens-temp/andré.jpg">
+                            <img v-if="profileEditImpl.data.uuid == 'newMother'" class="circular-image default-border" style="width: 5em; height: 5em;"
+                                src ="@/assets/imagens-temp/female-user.jpeg">
+                            <img v-else-if="profileEditImpl.data.uuid == 'newFather'" class="circular-image default-border" style="width: 5em; height: 5em;"
+                                src ="@/assets/imagens-temp/male-user.jpeg">
+                            <img v-else="profileEditImpl.data.uuid == 'newFather'" class="circular-image default-border" style="width: 5em; height: 5em;"
+                            :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${profileEditImpl.data.uuid}`">
                             <i class="fas fa-edit"></i>
                         </div>
                     </div>
@@ -59,7 +65,7 @@ if (!userLogged()) {
                         </label>
                         <label>
                             Nascimento
-                            <input type="date" id="birthdate" v-model="_birth_date" aria-label="Date"
+                            <input type="date" id="birthdate" v-model="profileEditImpl.data._birth_date" aria-label="Date"
                                 :aria-invalid="profileEditImpl.dataState.invalidDataNascimento"
                                 aria-describedby="valid-birthdate" />
                             <small v-if="profileEditImpl.dataState.invalidDataNascimento" id="valid-birthdate">Data
@@ -109,7 +115,8 @@ if (!userLogged()) {
                         Nome compartilável
                         <input v-model="profileEditImpl.data.name_shared_link" name="name_shared_link"
                             autosave="name_shared_link" :aria-invalid="profileEditImpl.dataState.invalidNameSharedLink"
-                            aria-describedby="valid-name-shared-link" placeholder="Nome compartilhável" />
+                            aria-describedby="valid-name-shared-link" placeholder="Nome compartilhável"
+                            @keypress="profileEditImpl.onChangeNameShared()"/>
                         <small v-if="profileEditImpl.dataState.invalidNameSharedLink" id="valid-name-shared-link">Nome
                             inválido! Precisa ser maior que 3 caracteres.</small>
                     </label>
@@ -126,12 +133,18 @@ import ToolButtonBack from '@/components/ToolButtonBack.vue';
 import * as profileEditImpl from './profileEdit';
 import { useRoute } from 'vue-router';
 import { defineComponent } from "vue";
+import { dataCurrentUserLogged } from '@/service/user/user';
 
 export default defineComponent({
     data() {
         return profileEditImpl.data
     },
     mounted() {
+
+        try {
+            dataCurrentUserLogged();
+        }catch{}
+
         try {
             profileEditImpl.data.name_shared = useRoute().params.name_shared.toString();
             profileEditImpl.data.uuid = useRoute().params.short_uuid.toString();
@@ -144,6 +157,9 @@ export default defineComponent({
                 profileEditImpl.mounted(this);
             });
         } catch { }
+    },
+    beforeUnmount() {
+        profileEditImpl.unmounted();
     },
     watch: profileEditImpl.watch()
 });

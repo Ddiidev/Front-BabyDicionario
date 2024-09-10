@@ -6,6 +6,7 @@ import router from '@/router';
 import Settings from '@/components/icons/Settings.vue';
 import EyeView from '@/components/icons/EyeView.vue';
 import * as HomeImpl from './Home';
+import confs from '@/constants/conf';
 
 
 // localStorage.setItem('current_id', useRoute().params.uuid.toString())
@@ -29,7 +30,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" src="@/assets/imagens-temp/milca.jpg"
+                            <img class="circular-image default-border" :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.mother?.uuid}`"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -57,7 +58,7 @@ if (!userLogged()) {
 
                 <body>
                     <div style="text-align: center;">
-                        <h3>Adicionar Mãe</h3>
+                        <h3 @click="HomeImpl.openSettingsMother(true)" class="btn-text">Adicionar Mãe</h3>
                     </div>
                 </body>
             </article>
@@ -69,7 +70,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" src="@/assets/imagens-temp/andré.jpg"
+                            <img class="circular-image default-border" :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.father?.uuid}`"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -97,7 +98,7 @@ if (!userLogged()) {
 
                 <body>
                     <div style="text-align: center;">
-                        <h3>Adicionar Pai</h3>
+                        <h3 @click="HomeImpl.openSettingsFather()" class="btn-text">Adicionar Pai</h3>
                     </div>
                 </body>
             </article>
@@ -132,10 +133,12 @@ if (!userLogged()) {
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Plus from '@/components/icons/plus.vue';
+import { CurrentUserLogged } from '@/constants/userLogged';
+import { dataCurrentUserLogged } from '@/service/user/user';
 
 export default defineComponent({
     mounted() {
+        dataCurrentUserLogged();
         try {
             this.$nextTick(() => {
                 HomeImpl.mounted(this);

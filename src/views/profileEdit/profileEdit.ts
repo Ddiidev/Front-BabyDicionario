@@ -1,9 +1,11 @@
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { getProfile } from "../profile/profile";
 import { newEmptyProfile, type IProfile } from "@/models/profile";
-import { formatarValorInput, stringDateToUnix } from "../utils";
-import { saveProfile } from "@/service/profile/profile";
+import { formatarValorInput, stringDateToUnix, unixDateToString } from "../utils";
+import { newProfile, saveProfile } from "@/service/profile/profile";
 import { Emitter } from "@/utils/emitter";
+import { Responsible } from "@/contracts/contracts_shared/responsavel";
+import router from "@/router";
 
 export let self: any;
 export function setThis(me: any) {
@@ -12,12 +14,25 @@ export function setThis(me: any) {
 export function mounted(self: any) {
     setThis(self);
 
-    loadProfile();
+    if (data.uuid == "newFather")
+        dataState.newUser = NewUser.pai
+    else if (data.uuid == 'newMother')
+        dataState.newUser = NewUser.mae
+    else
+        loadProfile();
+
+    if (dataState.newUser)
+        data.responsible = (dataState.newUser as number) as Responsible;
 }
 
 export enum Sex {
     masculino = 0,
     feminino = 1
+}
+
+enum NewUser {
+    pai = 0,
+    mae = 1
 }
 
 export interface IProfileEdit extends IProfile {
@@ -27,6 +42,14 @@ export interface IProfileEdit extends IProfile {
     _sex: Sex
     _weight: string
     _height: string
+}
+
+export interface IProfileStateEdit {
+    invalidFirstName: boolean;
+    invalidNameSharedLink: boolean;
+    invalidDataNascimento: boolean;
+    newUser?: NewUser;
+    isEmptyNameSharedLink: boolean
 }
 
 export let data = reactive<IProfileEdit>({
@@ -39,10 +62,11 @@ export let data = reactive<IProfileEdit>({
     _height: "0.00",
 });
 
-export let dataState = reactive({
+export let dataState = reactive<IProfileStateEdit>({
     invalidFirstName: false,
     invalidNameSharedLink: false,
-    invalidDataNascimento: false
+    invalidDataNascimento: false,
+    isEmptyNameSharedLink: true
 })
 
 async function loadProfile() {
@@ -53,6 +77,10 @@ async function loadProfile() {
     data.short_uuid = suuid;
     data._height = data.height.toString()
     data._weight = data.weight.toString()
+    data._birth_date = unixDateToString(data.birth_date);
+
+    if (data.first_name !== undefined || data.first_name !== "")
+        dataState.isEmptyNameSharedLink = false
 
     validData();
 }
@@ -72,6 +100,13 @@ export function watch() {
         },
         _sex() {
             data.sex = data._sex;
+        },
+        first_name() {
+            if (data.name_shared_link.trim() === "")
+                dataState.isEmptyNameSharedLink = true;
+
+            if (dataState.isEmptyNameSharedLink)
+                data.name_shared_link = (data.first_name as any).replaceAll(' ', '');
         }
     }
 }
@@ -98,15 +133,38 @@ export async function save() {
         return;
 
     try {
-        await saveProfile(data);
+        if (dataState.newUser !== undefined){
+            const profileCreated = await newProfile(data);
+            const newUuid = profileCreated.short_uuid;
+            const newNameShared = profileCreated.name_shared_link;
+            data = Object.assign(data, profileCreated);
 
-        Emitter.emitt("msg-login", {
-            title: "✅ Salvo!",
-            msg: "Alterações gravadas com sucesso!",
-        })
+            Emitter.emitt("msg-login", {
+                title: "✅ Salvo!",
+                msg: "Novo perfil criado com sucesso!",
+            })
 
-        window.location.href = window.location.href.replace(data.name_shared!, data.name_shared_link);
-        window.location.reload();
+            router.push(`/userProfileEdit/${newUuid}/${newNameShared}`);
+
+            setTimeout(() => {
+                window.location.href = window.location.href;
+                window.location.reload();
+            }, 4000);
+        }
+        else{
+            await saveProfile(data);
+            
+            Emitter.emitt("msg-login", {
+                title: "✅ Salvo!",
+                msg: "Alterações gravadas com sucesso!",
+            });
+
+            setTimeout(() => {
+                window.location.href = window.location.href.replace(data.name_shared!, data.name_shared_link).replace(data.uuid!, data.short_uuid!);
+                
+                window.location.reload();
+            }, 4000);
+        }
     } catch { }
 
 }
@@ -127,3 +185,15 @@ function validData() {
 
     return true;
 }
+export function onChangeNameShared() {
+    dataState.isEmptyNameSharedLink = false;
+
+    if (data.name_shared_link.trim() === "")
+        data.name_shared_link = (data.first_name as any).replaceAll(' ', '');
+}
+
+export function unmounted() {
+    dataState = reactive({} as IProfileStateEdit);
+    data = reactive({} as IProfileEdit);
+}
+

@@ -76,3 +76,35 @@ export function stringDateToUnix(date: string) {
     const num_date = Date.parse(new Date(`${date} 00:00`).toISOString());
     return parseInt(num_date.toString().substring(0, 9));
 }
+
+export function unixDateToString(unixTimestamp: number): string {
+    if (unixTimestamp === null || unixTimestamp === undefined) {
+        throw new Error('unixTimestamp cannot be null or undefined');
+    }
+
+    const date = new Date(unixTimestamp * 1000);
+    if (isNaN(date.getTime())) {
+        throw new Error('unixTimestamp is an invalid date');
+    }
+
+    const intlOptions : Intl.DateTimeFormatOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    const locale = navigator.language;
+    if (locale === null || locale === undefined) {
+        throw new Error('locale cannot be null or undefined');
+    }
+
+    const formattedDateParts = new Intl.DateTimeFormat(locale, intlOptions).formatToParts(date);
+    if (!formattedDateParts) {
+        throw new Error('toLocaleDateString returned null or undefined');
+    }
+
+    const year = formattedDateParts.find((part) => part.type === 'year')?.value;
+    const month = formattedDateParts.find((part) => part.type === 'month')?.value;
+    const day = formattedDateParts.find((part) => part.type === 'day')?.value;
+
+    if (year === undefined || month === undefined || day === undefined) {
+        throw new Error('Could not find year, month, or day in formatted date');
+    }
+
+    return `${year}-${month}-${day}`;
+}
