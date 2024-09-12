@@ -9,8 +9,8 @@ export class UserLogged {
     last_name: string = ''
     token = {} as ITokenContract
 
-    public getNameResponsible(): string {
-        const name = this.responsible?.toString() ?? '';
+    public getTextResponsible(): string {
+        const name = Responsible[this.responsible!].toString() ?? '';
         if (name.length > 0)
             return name[0].toLocaleUpperCase() + name.substring(1);
         else

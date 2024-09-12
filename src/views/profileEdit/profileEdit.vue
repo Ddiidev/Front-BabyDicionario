@@ -23,15 +23,13 @@ if (!userLogged()) {
                 <header class="center">
                     <div class="title-image">
                         <p class="center-text">{{ profileEditImpl.data.first_name }}</p>
-                        <div class="edit_img" data-tooltip="Mudar a imagem" data-placement="bottom">
-                            <img v-if="profileEditImpl.data.uuid == 'newMother'" class="circular-image default-border" style="width: 5em; height: 5em;"
-                                src ="@/assets/imagens-temp/female-user.jpeg">
-                            <img v-else-if="profileEditImpl.data.uuid == 'newFather'" class="circular-image default-border" style="width: 5em; height: 5em;"
-                                src ="@/assets/imagens-temp/male-user.jpeg">
-                            <img v-else="profileEditImpl.data.uuid == 'newFather'" class="circular-image default-border" style="width: 5em; height: 5em;"
-                            :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${profileEditImpl.data.uuid}`">
+                        <label for="file-upload" class="edit_img" data-tooltip="Mudar a imagem" data-placement="bottom">
+                            <img class="circular-image default-border" style="width: 5em; height: 5em;"
+                                :src="profileEditImpl.dataState.currentImageProfile">
                             <i class="fas fa-edit"></i>
-                        </div>
+                        </label>
+                        <input id="file-upload" @change="profileEditImpl.onFileSelected" type="file"
+                            style="display: none;" />
                     </div>
                 </header>
             </div>
@@ -65,8 +63,8 @@ if (!userLogged()) {
                         </label>
                         <label>
                             Nascimento
-                            <input type="date" id="birthdate" v-model="profileEditImpl.data._birth_date" aria-label="Date"
-                                :aria-invalid="profileEditImpl.dataState.invalidDataNascimento"
+                            <input type="date" id="birthdate" v-model="profileEditImpl.data._birth_date"
+                                aria-label="Date" :aria-invalid="profileEditImpl.dataState.invalidDataNascimento"
                                 aria-describedby="valid-birthdate" />
                             <small v-if="profileEditImpl.dataState.invalidDataNascimento" id="valid-birthdate">Data
                                 inválida</small>
@@ -79,8 +77,7 @@ if (!userLogged()) {
                         Peso
                         <div>
                             <div class="wrapper">
-                                <input v-model="_weight" name="weight"
-                                    class="form-control" placeholder="0,42">
+                                <input v-model="profileEditImpl.data._weight" name="weight" class="form-control" placeholder="0,42">
                                 <span class="units">kg</span>
                             </div>
                         </div>
@@ -89,8 +86,7 @@ if (!userLogged()) {
                         Altura
                         <div>
                             <div class="wrapper">
-                                <input v-model="_height" name="height"
-                                    class="form-control" placeholder="0,49">
+                                <input v-model="profileEditImpl.data._height" name="height" class="form-control" placeholder="0,49">
                                 <span class="units">cm</span>
                             </div>
                         </div>
@@ -116,7 +112,7 @@ if (!userLogged()) {
                         <input v-model="profileEditImpl.data.name_shared_link" name="name_shared_link"
                             autosave="name_shared_link" :aria-invalid="profileEditImpl.dataState.invalidNameSharedLink"
                             aria-describedby="valid-name-shared-link" placeholder="Nome compartilhável"
-                            @keypress="profileEditImpl.onChangeNameShared()"/>
+                            @keypress="profileEditImpl.onChangeNameShared()" />
                         <small v-if="profileEditImpl.dataState.invalidNameSharedLink" id="valid-name-shared-link">Nome
                             inválido! Precisa ser maior que 3 caracteres.</small>
                     </label>
@@ -133,17 +129,12 @@ import ToolButtonBack from '@/components/ToolButtonBack.vue';
 import * as profileEditImpl from './profileEdit';
 import { useRoute } from 'vue-router';
 import { defineComponent } from "vue";
-import { dataCurrentUserLogged } from '@/service/user/user';
 
 export default defineComponent({
     data() {
         return profileEditImpl.data
     },
     mounted() {
-
-        try {
-            dataCurrentUserLogged();
-        }catch{}
 
         try {
             profileEditImpl.data.name_shared = useRoute().params.name_shared.toString();
@@ -153,7 +144,7 @@ export default defineComponent({
         }
 
         try {
-            this.$nextTick(() => {
+            this.$nextTick(async () => {
                 profileEditImpl.mounted(this);
             });
         } catch { }

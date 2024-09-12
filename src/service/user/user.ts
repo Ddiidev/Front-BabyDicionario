@@ -12,14 +12,14 @@ export async function dataCurrentUserLogged(): Promise<UserLogged> {
         const objSub = parseJwt<{ sub: string }>(dataUserLogged.token.access_token);
         dataUserLogged.uuid = objSub.sub;
 
-        try{
+        try {
             const userDetails = await axios.get<IContractApi<UserLogged>>(`${confs.server}/user/details`, {
                 headers: auth.headerAuthorization()
             });
 
             if (userDetails.data.status == StatusContractApi.info && userDetails.data.content !== undefined)
                 dataUserLogged = Object.assign(dataUserLogged, userDetails.data.content!);
-        } catch (err: any) {
+        } catch (err) {
             await auth.refreshToken();
         }
 

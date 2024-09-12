@@ -30,7 +30,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.mother?.uuid}`"
+                            <img class="circular-image default-border" :src="`${confs.api_storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.mother?.uuid}`"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -70,7 +70,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" :src="`${confs.storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.father?.uuid}`"
+                            <img class="circular-image default-border" :src="`${confs.api_storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.father?.uuid}`"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>

@@ -50,7 +50,7 @@ export let currentProfile = reactive<IProfileContent>({
     birth_date: 0,
     _birth_date: '05/08/2021',
     weight: 11.5,
-    sex: '',
+    sex: 0,
     height: 0,
     color: '',
     father: {

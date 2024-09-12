@@ -1,28 +1,38 @@
 import { reactive, ref } from "vue";
-import { getProfile } from "../profile/profile";
+import { currentProfile, getProfile } from "../profile/profile";
 import { newEmptyProfile, type IProfile } from "@/models/profile";
 import { formatarValorInput, stringDateToUnix, unixDateToString } from "../utils";
 import { newProfile, saveProfile } from "@/service/profile/profile";
 import { Emitter } from "@/utils/emitter";
 import { Responsible } from "@/contracts/contracts_shared/responsavel";
 import router from "@/router";
+import { getPathImage, uploadImageProfile } from "@/service/storage/storage";
+import { dataCurrentUserLogged } from "@/service/user/user";
+import { CurrentUserLogged } from "@/constants/userLogged";
+import axios from "axios";
 
 export let self: any;
 export function setThis(me: any) {
     self = me;
 }
-export function mounted(self: any) {
+export async function mounted(self: any) {
     setThis(self);
+
+    try {
+        await dataCurrentUserLogged();
+    } catch { }
 
     if (data.uuid == "newFather")
         dataState.newUser = NewUser.pai
     else if (data.uuid == 'newMother')
         dataState.newUser = NewUser.mae
     else
-        loadProfile();
+        await loadProfile();
 
     if (dataState.newUser)
         data.responsible = (dataState.newUser as number) as Responsible;
+
+    await imageProfileDefault();
 }
 
 export enum Sex {
@@ -50,6 +60,8 @@ export interface IProfileStateEdit {
     invalidDataNascimento: boolean;
     newUser?: NewUser;
     isEmptyNameSharedLink: boolean
+    imageFile?: File
+    currentImageProfile?: string
 }
 
 export let data = reactive<IProfileEdit>({
@@ -75,8 +87,8 @@ async function loadProfile() {
     data = Object.assign(data, profile);
     data._sex = profile.sex as Sex
     data.short_uuid = suuid;
-    data._height = data.height.toString()
-    data._weight = data.weight.toString()
+    data._height = data.height.toFixed(2)
+    data._weight = data.weight.toFixed(2)
     data._birth_date = unixDateToString(data.birth_date);
 
     if (data.first_name !== undefined || data.first_name !== "")
@@ -133,12 +145,16 @@ export async function save() {
         return;
 
     try {
-        if (dataState.newUser !== undefined){
+        
+        if (dataState.newUser !== undefined) {
             const profileCreated = await newProfile(data);
             const newUuid = profileCreated.short_uuid;
             const newNameShared = profileCreated.name_shared_link;
             data = Object.assign(data, profileCreated);
 
+            if (dataState.imageFile !== undefined)
+                await uploadImageProfile(dataState.imageFile!, CurrentUserLogged.userLogged.uuid!, profileCreated.uuid!);
+            
             Emitter.emitt("msg-login", {
                 title: "✅ Salvo!",
                 msg: "Novo perfil criado com sucesso!",
@@ -151,9 +167,12 @@ export async function save() {
                 window.location.reload();
             }, 4000);
         }
-        else{
+        else {
+            if (dataState.imageFile !== undefined)
+                await uploadImageProfile(dataState.imageFile!, CurrentUserLogged.userLogged.uuid!, data.uuid!);
+
             await saveProfile(data);
-            
+
             Emitter.emitt("msg-login", {
                 title: "✅ Salvo!",
                 msg: "Alterações gravadas com sucesso!",
@@ -161,7 +180,7 @@ export async function save() {
 
             setTimeout(() => {
                 window.location.href = window.location.href.replace(data.name_shared!, data.name_shared_link).replace(data.uuid!, data.short_uuid!);
-                
+
                 window.location.reload();
             }, 4000);
         }
@@ -195,5 +214,56 @@ export function onChangeNameShared() {
 export function unmounted() {
     dataState = reactive({} as IProfileStateEdit);
     data = reactive({} as IProfileEdit);
+}
+
+export function onFileSelected(event: any) {
+    dataState.imageFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        dataState.currentImageProfile = e.target?.result?.toString();
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+}
+
+export async function imageProfile(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+        const img = getPathImage(CurrentUserLogged.userLogged.uuid!, data.uuid!);
+
+        try {
+            const imgBin = await axios.get(img, { responseType: 'blob' });
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                dataState.currentImageProfile = e.target?.result?.toString();
+                resolve(true);
+            };
+            reader.onerror = () => resolve(false);
+            
+            reader.readAsDataURL(imgBin.data);
+        } catch (err) {
+            resolve(false);
+        }
+    });
+}
+
+export async function imageProfileDefault() {
+    if (await imageProfile())
+        return;
+
+    let url = '';
+    if (data.uuid == "newMother") {
+        url = '/src/assets/imagens-temp/female-user.jpeg';
+    } else if (data.uuid == "newFather") {
+        url = '/src/assets/imagens-temp/male-user.jpeg';
+    } else if (data.sex == Responsible.pai) {
+        url = '/src/assets/imagens-temp/male-user.jpeg';
+    } else if (data.sex == Responsible.mae) {
+        url = '/src/assets/imagens-temp/female-user.jpeg';
+    } else {
+        url = '/src/assets/imagens-temp/add-photo.jpeg';
+    }
+
+    dataState.currentImageProfile = `http://${window.location.host}/${url}`;
 }
 

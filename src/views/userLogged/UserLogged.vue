@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<{ tagRef: string }>(), {
                     </tr>
                     <tr>
                         <th scope="row">Responsável</th>
-                        <td>{{ userLoggedImpl.userLoggedData.userLogged?.getNameResponsible() }}</td>
+                        <td>{{ userLoggedImpl.userLoggedData.userLogged?.getTextResponsible() }}</td>
                     </tr>
                     <!-- TODO: No email precisa de um blur -->
                     <!-- <tr>
