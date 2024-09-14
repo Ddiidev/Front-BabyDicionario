@@ -10,29 +10,11 @@ import { getPathImage, uploadImageProfile } from "@/service/storage/storage";
 import { dataCurrentUserLogged } from "@/service/user/user";
 import { CurrentUserLogged } from "@/constants/userLogged";
 import axios from "axios";
+import { imageProfile } from "@/utils/imageProfile";
 
 export let self: any;
 export function setThis(me: any) {
     self = me;
-}
-export async function mounted(self: any) {
-    setThis(self);
-
-    try {
-        await dataCurrentUserLogged();
-    } catch { }
-
-    if (data.uuid == "newFather")
-        dataState.newUser = NewUser.pai
-    else if (data.uuid == 'newMother')
-        dataState.newUser = NewUser.mae
-    else
-        await loadProfile();
-
-    if (dataState.newUser)
-        data.responsible = (dataState.newUser as number) as Responsible;
-
-    await imageProfileDefault();
 }
 
 export enum Sex {
@@ -140,6 +122,30 @@ function setHeight() {
     data._height = formatarValorInput(data._height.toString());
 }
 
+export async function mounted(self: any) {
+    setThis(self);
+
+    try {
+        await dataCurrentUserLogged();
+    } catch { }
+
+    if (data.uuid == "newFather")
+        dataState.newUser = NewUser.pai
+    else if (data.uuid == 'newMother')
+        dataState.newUser = NewUser.mae
+    else
+        await loadProfile();
+
+    if (dataState.newUser)
+        data.responsible = (dataState.newUser as number) as Responsible;
+
+    try{
+        dataState.currentImageProfile = await imageProfile(CurrentUserLogged.userLogged.uuid!, data.uuid!, data.sex);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export async function save() {
     if (!validData())
         return;
@@ -226,44 +232,44 @@ export function onFileSelected(event: any) {
     reader.readAsDataURL(event.target.files[0]);
 }
 
-export async function imageProfile(): Promise<boolean> {
-    return new Promise(async (resolve) => {
-        const img = getPathImage(CurrentUserLogged.userLogged.uuid!, data.uuid!);
+// export async function imageProfile(): Promise<boolean> {
+//     return new Promise(async (resolve) => {
+//         const img = getPathImage(CurrentUserLogged.userLogged.uuid!, data.uuid!);
 
-        try {
-            const imgBin = await axios.get(img, { responseType: 'blob' });
+//         try {
+//             const imgBin = await axios.get(img, { responseType: 'blob' });
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                dataState.currentImageProfile = e.target?.result?.toString();
-                resolve(true);
-            };
-            reader.onerror = () => resolve(false);
+//             const reader = new FileReader();
+//             reader.onload = (e) => {
+//                 dataState.currentImageProfile = e.target?.result?.toString();
+//                 resolve(true);
+//             };
+//             reader.onerror = () => resolve(false);
             
-            reader.readAsDataURL(imgBin.data);
-        } catch (err) {
-            resolve(false);
-        }
-    });
-}
+//             reader.readAsDataURL(imgBin.data);
+//         } catch (err) {
+//             resolve(false);
+//         }
+//     });
+// }
 
-export async function imageProfileDefault() {
-    if (await imageProfile())
-        return;
+// export async function imageProfileDefault() {
+//     if (await imageProfile())
+//         return;
 
-    let url = '';
-    if (data.uuid == "newMother") {
-        url = '/src/assets/imagens-temp/female-user.jpeg';
-    } else if (data.uuid == "newFather") {
-        url = '/src/assets/imagens-temp/male-user.jpeg';
-    } else if (data.sex == Responsible.pai) {
-        url = '/src/assets/imagens-temp/male-user.jpeg';
-    } else if (data.sex == Responsible.mae) {
-        url = '/src/assets/imagens-temp/female-user.jpeg';
-    } else {
-        url = '/src/assets/imagens-temp/add-photo.jpeg';
-    }
+//     let url = '';
+//     if (data.uuid == "newMother") {
+//         url = '/src/assets/imagens-temp/female-user.jpeg';
+//     } else if (data.uuid == "newFather") {
+//         url = '/src/assets/imagens-temp/male-user.jpeg';
+//     } else if (data.sex == Responsible.pai) {
+//         url = '/src/assets/imagens-temp/male-user.jpeg';
+//     } else if (data.sex == Responsible.mae) {
+//         url = '/src/assets/imagens-temp/female-user.jpeg';
+//     } else {
+//         url = '/src/assets/imagens-temp/add-photo.jpeg';
+//     }
 
-    dataState.currentImageProfile = `http://${window.location.host}/${url}`;
-}
+//     dataState.currentImageProfile = `http://${window.location.host}/${url}`;
+// }
 

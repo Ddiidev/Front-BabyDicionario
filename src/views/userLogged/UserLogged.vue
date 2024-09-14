@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{ tagRef: string }>(), {
             <header>
                 <div style="display: flex; justify-content: center;">
                     <div style="display: relative;">
-                        <img class="circular-image default-border" src="@/assets/imagens-temp/dante.jpg" />
+                        <img class="circular-image default-border" :src="userLoggedImpl.userLoggedData.currentImage" />
                         <div class="online"></div>
                     </div>
                     <div style="position: absolute; margin-left: 73%;">
@@ -152,6 +152,7 @@ export default defineComponent({
     width: 90px;
     padding: 0px;
     height: 90px;
+    object-fit: cover;
     position: relative;
     border-radius: 40%;
 }

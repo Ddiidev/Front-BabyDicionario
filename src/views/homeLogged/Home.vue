@@ -30,7 +30,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" :src="`${confs.api_storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.mother?.uuid}`"
+                            <img class="circular-image default-border" :src="HomeImpl.data.curretImageProfileMother"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -50,7 +50,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" opacity src="@/assets/imagens-temp/female-user.jpeg"
+                            <img class="circular-image default-border" opacity :src="HomeImpl.data.curretImageProfileMother"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -68,9 +68,10 @@ if (!userLogged()) {
                     <div style="display: flex; justify-content: end;">
                         <Settings @click="HomeImpl.openSettingsFather()" class="btn"></Settings>
                     </div>
+
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" :src="`${confs.api_storage}/server-image/${CurrentUserLogged.userLogged.uuid}/${HomeImpl.data.profile.father?.uuid}`"
+                            <img class="circular-image default-border" :src="HomeImpl.data.curretImageProfileFather"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -90,7 +91,7 @@ if (!userLogged()) {
                     </div>
                     <div style="display: flex; justify-content: center;">
                         <div class="grid">
-                            <img class="circular-image default-border" opacity src="@/assets/imagens-temp/male-user.jpeg"
+                            <img class="circular-image default-border" opacity :src="HomeImpl.data.curretImageProfileFather"
                                 style="width: 8em; height: 8em;" />
                         </div>
                     </div>
@@ -98,7 +99,7 @@ if (!userLogged()) {
 
                 <body>
                     <div style="text-align: center;">
-                        <h3 @click="HomeImpl.openSettingsFather()" class="btn-text">Adicionar Pai</h3>
+                        <h3 @click="HomeImpl.openSettingsFather(true)" class="btn-text">Adicionar Pai</h3>
                     </div>
                 </body>
             </article>

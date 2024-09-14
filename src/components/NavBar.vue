@@ -68,7 +68,7 @@ Emitter.listen('msg-login', (e: { msg: string, title: string, time?: number }) =
 					<nav>
 						<li>
 							<div @click="switchVisibleBtUserLogged" ref="btUserLogged" style="position: relative;">
-								<img class="circular-image default-border" src="@/assets/imagens-temp/dante.jpg"
+								<img class="circular-image default-border" :src="currentImage"
 									style="margin-bottom: 5%; margin-right: 2px;" />
 								<div class="online"></div>
 							</div>
@@ -93,6 +93,10 @@ import { Emitter } from '@/utils/emitter';
 import { defineComponent, type ComponentPublicInstance, ref } from 'vue';
 import { HandleDataToast } from './HandleToast';
 import * as auth from '@/auth/auth';
+import { imageProfile } from '@/utils/imageProfile';
+import { CurrentUserLogged } from '@/constants/userLogged';
+import { getSexDefaultFromResponsible } from '@/utils/sexAndResponsible';
+import { dataCurrentUserLogged } from '@/service/user/user';
 
 function getComponent(obj: any, nameObj: any) {
 	let result;
@@ -129,11 +133,19 @@ export default defineComponent({
 					Emitter.emitt('login', btEntrar);
 			} catch { }
 		}, 300);
+
+		try {
+			await dataCurrentUserLogged();
+			this.currentImage = await imageProfile(CurrentUserLogged.userLogged.uuid!, 'default-user', getSexDefaultFromResponsible(CurrentUserLogged.userLogged.responsible!)) ?? '';;
+		} catch (err) {
+			console.log(err)
+		}
 	},
 	data() {
 		return {
 			menuDefault: true,
-			userLogged: ref(false)
+			userLogged: ref(false),
+			currentImage: ref('')
 		}
 	},
 	profileEditImpl() {
@@ -191,6 +203,7 @@ export default defineComponent({
 	padding: 0px;
 	height: 50px;
 	position: relative;
+	object-fit: cover;
 	border-radius: 40%;
 	cursor: pointer;
 	transition: background-color 0.1s ease;

@@ -6,6 +6,11 @@ import { ref, type Ref } from "vue";
 import { UserLogged } from '@/models/userLogged';
 import * as user from '@/service/user/user';
 import router from '@/router';
+import { imageProfile } from '@/utils/imageProfile';
+import { CurrentUserLogged } from '@/constants/userLogged';
+import { Sex } from '../profileEdit/profileEdit';
+import { Responsible } from '@/contracts/contracts_shared/responsavel';
+import { getSexDefaultFromResponsible } from '@/utils/sexAndResponsible';
 
 export let toastData = new HandleDataToast();
 export let visibleUserLogged = false;
@@ -22,6 +27,7 @@ interface IUserLoggedData {
     invalidPassword: Ref<boolean | undefined>,
     messageError: string,
     userLogged?: UserLogged,
+    currentImage?: string
 }
 
 export let userLoggedData: IUserLoggedData = {
@@ -29,7 +35,8 @@ export let userLoggedData: IUserLoggedData = {
     invalidEmail: ref(undefined),
     email: ref(undefined),
     password: ref(''),
-    messageError: ''
+    messageError: '',
+    currentImage: ''
 };
 
 export async function mounted() {
@@ -45,6 +52,7 @@ export async function mounted() {
     });
 
     userLoggedData.userLogged = await user.dataCurrentUserLogged();
+    userLoggedData.currentImage = await imageProfile(CurrentUserLogged.userLogged.uuid!, 'default-user', getSexDefaultFromResponsible(CurrentUserLogged.userLogged.responsible!));
 }
 
 export function singOut() {

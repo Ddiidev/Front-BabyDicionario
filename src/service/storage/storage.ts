@@ -9,13 +9,15 @@ export async function uploadImageProfile(file: File, uuid_user: string, uuid_pro
 	formData.append('file', file);
 
 	const base64String = (await getBase64(file)).split(',')[1];
-	axios.post(`${confs.api_storage}/upload/${uuid_user}/${uuid_profile}`, base64String)
+	
+	await axios.post(`${confs.api_storage}/upload/${uuid_user}/${uuid_profile}`, base64String)
 		.then(response => {
 			console.log('Imagem enviada com sucesso!');
 		})
 		.catch(error => {
 			console.error('Erro ao enviar imagem:', error);
 		});
+
 }
 
 export function getPathImage(uuid_user: string, uuid_profile: string): string {
