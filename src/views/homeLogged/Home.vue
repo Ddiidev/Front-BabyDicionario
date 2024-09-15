@@ -24,39 +24,8 @@ if (!userLogged()) {
 
         <div class="parent-panels">
             <div class="left-panel-children">
-                <div class="container" style="padding-left: 0px;">
-
-                    <div class="container overflow-auto" style="height: 82vh; padding-top: 25px;">
-                        <article class="card-profile" style="margin-bottom: 35px;">
-                            <header>
-                                <div style="display: flex; justify-content: end;">
-                                    <Settings @click="HomeImpl.openSettingsMother()" class="btn">
-                                    </Settings>
-                                </div>
-                                <div style="display: flex; justify-content: center;">
-                                    <div class="grid">
-                                        <img class="circular-image default-border"
-                                            :src="HomeImpl.data.curretImageProfileMother"
-                                            style="width: 8em; height: 8em;" />
-                                    </div>
-                                </div>
-                            </header>
-
-                            <body>
-                                <div style="text-align: center;">
-                                    <h3 class="card-profile-title">{{ HomeImpl.data.profile.mother?.first_name }}</h3>
-                                    <p>Mãe</p>
-                                </div>
-                            </body>
-                        </article>
-                    </div>
-                </div>
-            </div>
-            <div class="left-panel-children" style="border-left: 2px solid var(--pico-primary);"></div>
-
-
-            <div class="right-panel-children">
-                <div class="container grid">
+                <!-- <div class="container"> -->
+                <div class="container" style="height: max-content; width: max-content; padding-top: 50px;">
                     <!-- Mother -->
                     <article class="card-profile" v-if="HomeImpl.containMother()">
                         <header>
@@ -148,6 +117,63 @@ if (!userLogged()) {
                     </article>
                     <!-- /Father -->
                 </div>
+                <!-- </div> -->
+            </div>
+            <div class="left-panel-children" style="border-left: 2px solid var(--pico-primary);"></div>
+
+
+            <div class="right-panel-children" style="width: max-content;">
+                <article class="container-fluid">
+                    <h2 style="text-align: center;">Filhos</h2>
+                </article>
+                <div class="container grid" style="display: grid; place-items: center">
+                    <article class="card-profile" style="margin-bottom: 35px;">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Settings @click="HomeImpl.openSettingsMother()" class="btn">
+                                </Settings>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border"
+                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
+
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 class="card-profile-title">{{ HomeImpl.data.profile.mother?.first_name }}</h3>
+                                <p>Mãe</p>
+                            </div>
+                        </body>
+                    </article>
+
+                    <article class="card-profile" style="margin-bottom: 35px;">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Plus @click="HomeImpl.addNewBaby()" class="btn"></Plus>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border" opacity
+                                        src="@/assets/imagens-temp/add-photo.jpeg"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
+
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 @click="HomeImpl.addNewBaby()" class="btn-text card-profile-title">
+                                    Adicionar bebê
+                                </h3>
+                                    <div style="padding-top: 20%;" />
+                            </div>
+                        </body>
+                    </article>
+                </div>
             </div>
         </div>
     </main>
@@ -157,6 +183,7 @@ if (!userLogged()) {
 import { defineComponent } from "vue";
 import { CurrentUserLogged } from '@/constants/userLogged';
 import { dataCurrentUserLogged } from '@/service/user/user';
+import Plus from '@/components/icons/plus.vue';
 
 export default defineComponent({
     mounted() {
@@ -177,28 +204,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* .center {
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-} */
-
-.parent {
-    display: grid;
-    grid-template-columns: 0.3fr;
-    grid-template-rows: 0.3fr 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    justify-content: center;
-}
-
-.text-card {
-    border-style: dashed;
-    border-radius: 25%;
-    text-align: center;
-    padding: 3px 10px 3px 10px;
-}
-
 .circular-image {
     align-self: center;
     object-fit: cover;
@@ -209,21 +214,27 @@ export default defineComponent({
     opacity: 0.7;
 }
 
+main .container-fluid {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 .parent-panels {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 0.36fr);
-    gap: 30px;
     overflow-x: hidden;
+    display: grid;
+    gap: 30px;
 }
 
 .left-panel-children .container {
-    display: grid;
     place-items: center;
-    margin-right: 5px;
-    width: 25vw;
     overflow-x: hidden;
-    margin-top: -5px;
+    margin-right: 5px;
+    margin-top: -20px;
+    height: 85%;
+    display: grid;
+    width: 25vw;
 }
 
 .left-panel-children {
@@ -234,11 +245,12 @@ export default defineComponent({
     grid-row: span 2 / span 2;
     grid-column-start: 3;
     padding-top: 25px;
+    /* padding-right: 20%; */
 }
 
 .card-profile {
-    width: 14em;
     height: fit-content;
+    width: 14em;
 }
 
 .parent-panels {

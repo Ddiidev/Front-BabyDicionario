@@ -4,7 +4,6 @@ import router from "@/router";
 import * as servProfile from "@/service/profile/profile";
 import { imageProfile } from "@/utils/imageProfile";
 import { reactive } from "vue";
-// import 
 
 export let self: any;
 export function setThis(me: any) {
@@ -55,4 +54,8 @@ export function openSettingsFather(newUser: boolean = false) {
         router.push(`/userProfileEdit/newFather/${data.profile.father?.name_shared_link}`)
     else
         router.push(`/userProfileEdit/${data.profile.father?.short_uuid}/${data.profile.father?.name_shared_link}`)
+}
+
+export function addNewBaby() {
+    throw new Error('Function not implemented.');
 }
