@@ -22,112 +22,133 @@ if (!userLogged()) {
     <NavBar></NavBar>
     <main class="main container-fluid">
 
-        <div class="center grid">
-            <article v-if="HomeImpl.containMother()" style="width: 15em;">
-                <header>
-                    <div style="display: flex; justify-content: end;">
-                        <Settings @click="HomeImpl.openSettingsMother()" class="btn"></Settings>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
-                        <div class="grid">
-                            <img class="circular-image default-border" :src="HomeImpl.data.curretImageProfileMother"
-                                style="width: 8em; height: 8em;" />
-                        </div>
-                    </div>
-                </header>
+        <div class="parent-panels">
+            <div class="left-panel-children">
+                <div class="container" style="padding-left: 0px;">
 
-                <body>
-                    <div style="text-align: center;">
-                        <h3>{{ HomeImpl.data.profile.mother?.first_name }}</h3>
-                        <p>Mãe</p>
-                    </div>
-                </body>
-            </article>
-            <article v-else style="width: 15em;">
-                <header>
-                    <div style="display: flex; justify-content: end;">
-                        <Settings @click="HomeImpl.openSettingsMother(true)" class="btn"></Settings>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
-                        <div class="grid">
-                            <img class="circular-image default-border" opacity :src="HomeImpl.data.curretImageProfileMother"
-                                style="width: 8em; height: 8em;" />
-                        </div>
-                    </div>
-                </header>
+                    <div class="container overflow-auto" style="height: 82vh; padding-top: 25px;">
+                        <article class="card-profile" style="margin-bottom: 35px;">
+                            <header>
+                                <div style="display: flex; justify-content: end;">
+                                    <Settings @click="HomeImpl.openSettingsMother()" class="btn">
+                                    </Settings>
+                                </div>
+                                <div style="display: flex; justify-content: center;">
+                                    <div class="grid">
+                                        <img class="circular-image default-border"
+                                            :src="HomeImpl.data.curretImageProfileMother"
+                                            style="width: 8em; height: 8em;" />
+                                    </div>
+                                </div>
+                            </header>
 
-                <body>
-                    <div style="text-align: center;">
-                        <h3 @click="HomeImpl.openSettingsMother(true)" class="btn-text">Adicionar Mãe</h3>
+                            <body>
+                                <div style="text-align: center;">
+                                    <h3 class="card-profile-title">{{ HomeImpl.data.profile.mother?.first_name }}</h3>
+                                    <p>Mãe</p>
+                                </div>
+                            </body>
+                        </article>
                     </div>
-                </body>
-            </article>
+                </div>
+            </div>
+            <div class="left-panel-children" style="border-left: 2px solid var(--pico-primary);"></div>
 
-            <article v-if="HomeImpl.containFater()" style="width: 15em;">
-                <header>
-                    <div style="display: flex; justify-content: end;">
-                        <Settings @click="HomeImpl.openSettingsFather()" class="btn"></Settings>
-                    </div>
 
-                    <div style="display: flex; justify-content: center;">
-                        <div class="grid">
-                            <img class="circular-image default-border" :src="HomeImpl.data.curretImageProfileFather"
-                                style="width: 8em; height: 8em;" />
-                        </div>
-                    </div>
-                </header>
+            <div class="right-panel-children">
+                <div class="container grid">
+                    <!-- Mother -->
+                    <article class="card-profile" v-if="HomeImpl.containMother()">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Settings @click="HomeImpl.openSettingsMother()" class="btn"></Settings>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border"
+                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
 
-                <body>
-                    <div style="text-align: center;">
-                        <h3>{{ HomeImpl.data.profile.father?.first_name }}</h3>
-                        <p>Pai</p>
-                    </div>
-                </body>
-            </article>
-            <article v-else style="width: 15em;">
-                <header>
-                    <div style="display: flex; justify-content: end;">
-                        <Settings @click="HomeImpl.openSettingsFather(true)" class="btn"></Settings>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
-                        <div class="grid">
-                            <img class="circular-image default-border" opacity :src="HomeImpl.data.curretImageProfileFather"
-                                style="width: 8em; height: 8em;" />
-                        </div>
-                    </div>
-                </header>
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 class="card-profile-title">{{ HomeImpl.data.profile.mother?.first_name }}</h3>
+                                <p>Mãe</p>
+                            </div>
+                        </body>
+                    </article>
+                    <article v-else class="card-profile">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Settings @click="HomeImpl.openSettingsMother(true)" class="btn"></Settings>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border" opacity
+                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
 
-                <body>
-                    <div style="text-align: center;">
-                        <h3 @click="HomeImpl.openSettingsFather(true)" class="btn-text">Adicionar Pai</h3>
-                    </div>
-                </body>
-            </article>
-        </div>
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 @click="HomeImpl.openSettingsMother(true)" class="btn-text card-profile-title">
+                                    Adicionar Mãe</h3>
+                            </div>
+                        </body>
+                    </article>
+                    <!-- /Mother -->
 
-        <div class="center">
-            <article style="width: 15em;">
-                <header>
-                    <div style="display: flex; justify-content: end;">
-                        <EyeView class="btn"></EyeView>
-                    </div>
-                    <div style="display: flex; justify-content: center;">
-                        <div class="grid">
-                            <img class="circular-image " src="@/assets/baby-voice-up.ico"
-                            style="width: 8em; height: 8em;" />
-                        </div>
-                    </div>
-                </header>
-                
-                <body>
-                    <div style="text-align: center;">
-                        <h3>{{ 1 }} Filho(s)</h3>
-                        <div style="display: flex; justify-content: left;">
-                            <p class="text-card">{{ 32 }} Palavra(s)</p>
-                        </div>
-                    </div>
-                </body>
-            </article>
+                    <!-- Father -->
+                    <article class="card-profile" v-if="HomeImpl.containFater()">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Settings @click="HomeImpl.openSettingsFather()" class="btn"></Settings>
+                            </div>
+
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border"
+                                        :src="HomeImpl.data.curretImageProfileFather"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
+
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 class="card-profile-title">{{ HomeImpl.data.profile.father?.first_name }}</h3>
+                                <p>Pai</p>
+                            </div>
+                        </body>
+                    </article>
+                    <article v-else class="card-profile">
+                        <header>
+                            <div style="display: flex; justify-content: end;">
+                                <Settings @click="HomeImpl.openSettingsFather(true)" class="btn"></Settings>
+                            </div>
+                            <div style="display: flex; justify-content: center;">
+                                <div class="grid">
+                                    <img class="circular-image default-border" opacity
+                                        :src="HomeImpl.data.curretImageProfileFather"
+                                        style="width: 8em; height: 8em;" />
+                                </div>
+                            </div>
+                        </header>
+
+                        <body>
+                            <div style="text-align: center;">
+                                <h3 @click="HomeImpl.openSettingsFather(true)" class="btn-text card-profile-title">
+                                    Adicionar Pai</h3>
+                            </div>
+                        </body>
+                    </article>
+                    <!-- /Father -->
+                </div>
+            </div>
         </div>
     </main>
 </template>
@@ -156,11 +177,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.center {
+/* .center {
     display: flex;
     justify-content: center;
     overflow: hidden;
-}
+} */
 
 .parent {
     display: grid;
@@ -186,5 +207,110 @@ export default defineComponent({
 
 .circular-image[opacity] {
     opacity: 0.7;
+}
+
+.parent-panels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 0.36fr);
+    gap: 30px;
+    overflow-x: hidden;
+}
+
+.left-panel-children .container {
+    display: grid;
+    place-items: center;
+    margin-right: 5px;
+    width: 25vw;
+    overflow-x: hidden;
+    margin-top: -5px;
+}
+
+.left-panel-children {
+    grid-row: span 3 / span 2;
+}
+
+.right-panel-children {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    padding-top: 25px;
+}
+
+.card-profile {
+    width: 14em;
+    height: fit-content;
+}
+
+.parent-panels {
+    gap: var(20px);
+}
+
+/* Media query para telas largas (800px e maior) */
+@media (min-width: 800px) {
+
+    .left-panel-children .container {
+        padding-left: 10px;
+        padding-right: 15px;
+    }
+
+    .card-profile {
+        width: 12em;
+    }
+}
+
+@media (max-width: 900px) and (min-width: 500px) {
+    .parent-panels {
+        gap: var(20px);
+    }
+}
+
+@media (max-width: 800px) {
+    .left-panel-children .container {
+        width: 35vw;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .card-profile {
+        width: 12em;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .left-panel-children .container {
+        width: 40vw;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .card-profile {
+        width: 12em;
+    }
+}
+
+@media (max-width: 600px) {
+    .card-profile {
+        width: 11em;
+    }
+}
+
+@media (max-width: 500px) {
+    .card-profile {
+        width: 11em;
+        font-size: smaller;
+    }
+}
+
+@media (max-width: 400px) {
+    .card-profile {
+        width: 10em;
+        padding-bottom: 0;
+        font-size: smaller;
+    }
+
+    .card-profile-title {
+        font-size: large;
+    }
 }
 </style>

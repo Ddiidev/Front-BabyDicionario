@@ -28,8 +28,8 @@
 :root:not([data-theme=dark]), [data-theme=light] {
     --pico-primary: #feb1a6;
     --pico-primary-background: #feb1a6;
-    --pico-primary-hover: #b18a83;
-    /* --pico-primary-hover-background: #7d625d; */
+    --pico-primary-hover: #b18077;
+    --pico-primary-hover-background: #ac5647;
     --pico-background-color: #f3f2ed30;
     --pico-color: #8d5a53;
     --pico-border-color: #feb1a6;
@@ -43,4 +43,38 @@
     --pico-typography-spacing-vertical: 0.3rem;
     --pico-form-element-spacing-vertical: 1rem;
     --pico-form-element-spacing-horizontal: 1.25rem;
+    
+    --primary-color: var(--pico-primary);
+    --secondary-color: var(--pico-primary-background);
+    --hover-color: var(--pico-primary-hover);
 }
+  
+  *::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+  }
+  
+  *::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    border: 4px solid #fff6ed;
+  }
+  
+  *::-webkit-scrollbar-track:hover {
+    background-color: var(--hover-color);
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    border: 1px solid #fff6ed;
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    border: 1px solid var(--pico-primary-hover-background);
+  }
+  
+  *::-webkit-scrollbar-thumb:active {
+    background-color: var(--pico-primary-hover-background)
+  }
+  
