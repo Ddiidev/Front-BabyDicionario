@@ -1,11 +1,10 @@
 import { CurrentUserLogged } from '@/constants/userLogged';
 import type { IFamilyProfiles } from '@/models/familyProfiles';
 import { isProfile, type IProfile } from '@/models/profile';
-import router from '@/router';
 import * as servProfile from '@/service/profile/profile';
 import { imageProfile } from '@/utils/imageProfile';
-import { sleep } from '@/utils/time';
 import { reactive } from 'vue';
+import router from '@/router';
 
 export let self: any;
 export function setThis(me: any) {

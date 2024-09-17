@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import ToolButton from '@/components/ToolButton.vue';
 import NavBar from '@/components/NavBar.vue';
 import { userLogged } from '@/auth/auth';
 import router from '@/router';
 import Settings from '@/components/icons/Settings.vue';
-import EyeView from '@/components/icons/EyeView.vue';
 import * as HomeImpl from './Home';
-import confs from '@/constants/conf';
 
-// localStorage.setItem('current_id', useRoute().params.uuid.toString())
-// localStorage.setItem('name', useRoute().params.name.toString())
 if (!userLogged()) {
 	router.push({
 		path: '/',

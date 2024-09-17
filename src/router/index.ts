@@ -29,6 +29,11 @@ const router = createRouter({
 			name: 'createUser',
 			component: () => import('@/views/user/CreateUser.vue'),
 		},
+		{
+			path: '/words/:short_uuid',
+			name: 'Words',
+			component: () => import('@/views/words/Words.vue'),
+		}
 	],
 });
 
