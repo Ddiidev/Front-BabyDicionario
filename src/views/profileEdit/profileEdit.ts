@@ -24,7 +24,8 @@ export enum Sex {
 
 enum NewUser {
     pai = 0,
-    mae = 1
+    mae = 1,
+    baby = 2
 }
 
 export interface IProfileEdit extends IProfile {
@@ -133,10 +134,12 @@ export async function mounted(self: any) {
         dataState.newUser = NewUser.pai
     else if (data.uuid == 'newMother')
         dataState.newUser = NewUser.mae
+    else if (data.uuid == 'newBaby')
+        dataState.newUser = NewUser.baby
     else
         await loadProfile();
 
-    if (dataState.newUser)
+    if (dataState.newUser !== undefined && dataState.newUser !== NewUser.baby)
         data.responsible = (dataState.newUser as number) as Responsible;
 
     try{
@@ -149,9 +152,9 @@ export async function mounted(self: any) {
 export async function save() {
     if (!validData())
         return;
-
+    
     try {
-        
+        // debugger;
         if (dataState.newUser !== undefined) {
             const profileCreated = await newProfile(data);
             const newUuid = profileCreated.short_uuid;

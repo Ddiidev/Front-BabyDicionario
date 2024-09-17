@@ -32,11 +32,11 @@ interface IStateModal {
     show: boolean
 }
 
-export let modal = { show: false } as IStateModal;
-export let toastData = new HandleDataToast();
+export const modal = { show: false } as IStateModal;
+export const toastData = new HandleDataToast();
 export const final_step = 4;
-export let current_step = ref(1);
-export let form_data = reactive<ICreateUser>({
+export const current_step = ref(1);
+export const form_data = reactive<ICreateUser>({
     primeiro_nome: '',
     pai: true,
     mae: false,

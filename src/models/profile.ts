@@ -14,9 +14,7 @@ export interface IProfile {
   sex: number
   height: number
   color: string
-  father?: IProfile
-  mother?: IProfile
-  brothers: IProfile[]
+  currentImage?: string;
 }
 
 export function newEmptyProfile(): IProfile {
@@ -32,15 +30,10 @@ export function newEmptyProfile(): IProfile {
     sex: 0,
     height: 0,
     color: '',
-    father: undefined,
-    mother: undefined,
-    brothers: []
+    currentImage: undefined,
   }
 }
 
 export function isProfile(p?: IProfile): p is IProfile {
-  return p !== undefined &&
-    typeof p.father !== 'undefined' &&
-    typeof p.mother !== 'undefined' &&
-    (Array.isArray(p.brothers) && p.brothers.every(isProfile))
-} 
+  return p !== undefined
+}

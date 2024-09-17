@@ -1,4 +1,3 @@
-
 export interface ICurrentResolution {
     height: number
     width: number
@@ -70,13 +69,19 @@ export function dateUnixToString(date: number): string {
  * Converte uma data em string para um timestamp Unix.
  *
  * @param {string} date - A data em string a ser convertida.
- * @return {number} O timestamp Unix correspondente à data de entrada.
+ * @throws {Error} Se a data for null ou undefined.
  */
-export function stringDateToUnix(date: string) {
+export function stringDateToUnix(date: string): number {
     const num_date = Date.parse(new Date(`${date} 00:00`).toISOString());
-    return parseInt(num_date.toString().substring(0, 9));
+    return Math.floor(num_date / 1000);
 }
 
+/**
+ * Converte um timestamp Unix para uma string de data formatada.
+ *
+ * @param {number} unixTimestamp - O timestamp Unix a ser convertido.
+ * @throws {Error} Se o timestamp Unix for null ou undefined.
+ */
 export function unixDateToString(unixTimestamp: number): string {
     if (unixTimestamp === null || unixTimestamp === undefined) {
         throw new Error('unixTimestamp cannot be null or undefined');

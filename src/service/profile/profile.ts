@@ -1,30 +1,26 @@
 import * as auth from "@/auth/auth";
 import confs from "@/constants/conf";
 import { StatusContractApi, type IContractApi, type IContractApiNoContent } from "@/contracts/api/contractApi";
+import type { IFamilyProfiles } from "@/models/familyProfiles";
 import type { IProfile } from "@/models/profile";
 import axios from "axios";
 
 /**
  * Recupera o perfil da família do servidor.
  *
- * @return {Promise<IProfile>} O objeto de perfil da família.
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
-export async function loadFamilyProfile() {
-    let dataProfile: IProfile = {} as IProfile;
+export async function loadFamilyProfile(): Promise<IFamilyProfiles> {
+    let dataProfile: IFamilyProfiles = {} as IFamilyProfiles;
     try {
-        const userDetails = await axios.get<IContractApi<IProfile[]>>(`${confs.server}/profile/details-home`, {
+        const userDetails = await axios.get<IContractApi<IFamilyProfiles>>(`${confs.server}/profile/all-family`, {
             headers: auth.headerAuthorization()
         });
 
         if (userDetails.data.status == StatusContractApi.info && userDetails.data.content !== undefined)
             dataProfile = Object.assign(dataProfile, userDetails.data.content!);
     } catch (err: any) {
-        if (err.response.status == 401) {
-            await auth.refreshToken();
-
-            return await loadFamilyProfile();
-        }
+        throw err;
     }
 
     return dataProfile;
@@ -47,11 +43,7 @@ export async function saveProfile(profile: IProfile) {
             }
         );
     } catch (err: any) {
-        if (err.response.status = 401) {
-            await auth.refreshToken();
-
-            return await saveProfile(profile);
-        }
+        throw err;
     }
 }
 
@@ -76,11 +68,7 @@ export async function newProfile(profile: IProfile): Promise<IProfile> {
 
         result = Object.assign(result, response.data.content!);
     } catch (err: any) {
-        if (err.response.status = 401) {
-            await auth.refreshToken();
-
-            return await newProfile(profile);
-        }
+        throw err;
     }
 
     return result;

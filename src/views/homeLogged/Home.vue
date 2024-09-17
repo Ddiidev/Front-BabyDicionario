@@ -24,7 +24,6 @@ if (!userLogged()) {
 
         <div class="parent-panels">
             <div class="left-panel-children">
-                <!-- <div class="container"> -->
                 <div class="container" style="height: max-content; width: max-content; padding-top: 50px;">
                     <!-- Mother -->
                     <article class="card-profile" v-if="HomeImpl.containMother()">
@@ -35,7 +34,7 @@ if (!userLogged()) {
                             <div style="display: flex; justify-content: center;">
                                 <div class="grid">
                                     <img class="circular-image default-border"
-                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        :src="HomeImpl.data.profile.mother!.currentImage"
                                         style="width: 8em; height: 8em;" />
                                 </div>
                             </div>
@@ -56,7 +55,7 @@ if (!userLogged()) {
                             <div style="display: flex; justify-content: center;">
                                 <div class="grid">
                                     <img class="circular-image default-border" opacity
-                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        :src="HomeImpl.data.profile.mother!.currentImage"
                                         style="width: 8em; height: 8em;" />
                                 </div>
                             </div>
@@ -81,7 +80,7 @@ if (!userLogged()) {
                             <div style="display: flex; justify-content: center;">
                                 <div class="grid">
                                     <img class="circular-image default-border"
-                                        :src="HomeImpl.data.curretImageProfileFather"
+                                        :src="HomeImpl.data.profile.father!.currentImage"
                                         style="width: 8em; height: 8em;" />
                                 </div>
                             </div>
@@ -102,7 +101,7 @@ if (!userLogged()) {
                             <div style="display: flex; justify-content: center;">
                                 <div class="grid">
                                     <img class="circular-image default-border" opacity
-                                        :src="HomeImpl.data.curretImageProfileFather"
+                                        :src="HomeImpl.data.profile.father!.currentImage"
                                         style="width: 8em; height: 8em;" />
                                 </div>
                             </div>
@@ -117,26 +116,24 @@ if (!userLogged()) {
                     </article>
                     <!-- /Father -->
                 </div>
-                <!-- </div> -->
             </div>
             <div class="left-panel-children" style="border-left: 2px solid var(--pico-primary);"></div>
-
 
             <div class="right-panel-children" style="width: max-content;">
                 <article class="container-fluid">
                     <h2 style="text-align: center;">Filhos</h2>
                 </article>
                 <div class="container grid" style="display: grid; place-items: center">
-                    <article class="card-profile" style="margin-bottom: 35px;">
+                    <article v-for="profile in HomeImpl.data.profile.babys" class="card-profile" style="margin-bottom: 35px;">
                         <header>
                             <div style="display: flex; justify-content: end;">
-                                <Settings @click="HomeImpl.openSettingsMother()" class="btn">
+                                <Settings @click="HomeImpl.openSettingsProfile(profile)" class="btn">
                                 </Settings>
                             </div>
                             <div style="display: flex; justify-content: center;">
                                 <div class="grid">
                                     <img class="circular-image default-border"
-                                        :src="HomeImpl.data.curretImageProfileMother"
+                                        :src="profile.currentImage"
                                         style="width: 8em; height: 8em;" />
                                 </div>
                             </div>
@@ -144,8 +141,8 @@ if (!userLogged()) {
 
                         <body>
                             <div style="text-align: center;">
-                                <h3 class="card-profile-title">{{ HomeImpl.data.profile.mother?.first_name }}</h3>
-                                <p>Mãe</p>
+                                <h3 class="card-profile-title">{{ profile.first_name }}</h3>
+                                <p>{{ profile.age }} ano(s)</p>
                             </div>
                         </body>
                     </article>

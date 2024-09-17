@@ -29,6 +29,7 @@ export async function dataCurrentUserLogged(): Promise<UserLogged> {
     CurrentUserLogged.userLogged = dataUserLogged;
     return dataUserLogged;
 }
+
 function parseJwt<T>(token: string): T {
     try {
         const base64Url = token.split('.')[1];

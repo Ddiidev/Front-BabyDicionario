@@ -1,7 +1,6 @@
 import type { ITokenContractRecover } from '@/contracts/token/tokenRecoverResponse';
 import { StatusContractApi, type IContractApi } from '@/contracts/api/contractApi'
 import type { IRecoveryPassword } from '@/contracts/recovery/recovery_password';
-import { UserLogged } from '@/models/userLogged';
 import { DateNow } from '@/utils/date';
 import confs from '@/constants/conf';
 import * as auth from '@/auth/auth';

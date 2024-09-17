@@ -40,7 +40,7 @@ interface IProfileContent extends IProfile {
     _birth_date: string
 }
 
-export let currentProfile = reactive<IProfileContent>({
+export const currentProfile = reactive<IProfileContent>({
     surname: "Pitxhico",
     first_name: "Dante",
     short_uuid: "",
@@ -53,13 +53,6 @@ export let currentProfile = reactive<IProfileContent>({
     sex: 0,
     height: 0,
     color: '',
-    father: {
-        first_name: 'Nome do pai'
-    } as IProfile,
-    mother: {
-        first_name: 'Nome da mãe'
-    } as IProfile,
-    brothers: []
 });
 
 export function resenha(): string {
@@ -81,10 +74,7 @@ export function idadeBebe(): string {
 }
 
 export function quantidadeIrmaos(): string {
-    if (currentProfile.brothers.length == 0)
-        return "Nenhum";
-    else
-        return currentProfile.brothers.length.toString();
+    return "0";
 }
 //TODO: Corrigir
 // (async () => {

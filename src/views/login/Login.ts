@@ -34,7 +34,7 @@ export interface ILogin {
     flowPasswordReset: Ref<number>
 }
 
-export let loginData: ILogin = {
+export const loginData: ILogin = {
     email: ref(undefined),
     password: ref(''),
     invalidEmail: ref(undefined),

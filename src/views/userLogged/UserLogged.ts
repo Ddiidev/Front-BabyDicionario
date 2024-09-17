@@ -12,7 +12,7 @@ import { Sex } from '../profileEdit/profileEdit';
 import { Responsible } from '@/contracts/contracts_shared/responsavel';
 import { getSexDefaultFromResponsible } from '@/utils/sexAndResponsible';
 
-export let toastData = new HandleDataToast();
+export const toastData = new HandleDataToast();
 export let visibleUserLogged = false;
 let tagRef: HTMLElement;
 export let self: any;
@@ -30,7 +30,7 @@ interface IUserLoggedData {
     currentImage?: string
 }
 
-export let userLoggedData: IUserLoggedData = {
+export const userLoggedData: IUserLoggedData = {
     invalidPassword: ref(undefined),
     invalidEmail: ref(undefined),
     email: ref(undefined),

@@ -57,7 +57,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/milca.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>{{ currentProfile.mother?.first_name }}</h2>
+                                <h2>{{ currentProfile.first_name }}</h2>
                                 <p>Mãe</p>
                             </hgroup>
                         </div>
@@ -65,7 +65,7 @@ localStorage.setItem('name', useRoute().params.name.toString())
                             <img class="circular-image" src="@/assets/imagens-temp/andré.jpg"
                                 style="width: 100px; height: 100px;" />
                             <hgroup>
-                                <h2>{{ currentProfile.father?.first_name }}</h2>
+                                <h2>{{ currentProfile.first_name }}</h2>
                                 <p>Pai</p>
                             </hgroup>
                         </div>

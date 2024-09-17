@@ -23,7 +23,7 @@ export async function refreshToken(): Promise<void> {
 }
 
 export function headerAuthorization(): RawAxiosRequestHeaders | AxiosHeaders {
-    let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
+    const token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
 
     return {
         Authorization: `Bearer ${token.access_token}`
@@ -31,7 +31,7 @@ export function headerAuthorization(): RawAxiosRequestHeaders | AxiosHeaders {
 }
 
 export function headerAuthorizationAndRefreshToken(): RawAxiosRequestHeaders | AxiosHeaders {
-    let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
+    const token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
 
     return {
         'refresh-token': token.refresh_token,
@@ -40,7 +40,7 @@ export function headerAuthorizationAndRefreshToken(): RawAxiosRequestHeaders | A
 }
 
 export function headerAuthorizationRecovery(): RawAxiosRequestHeaders | AxiosHeaders {
-    let token: string = localStorage.getItem('access_recovery') ?? '';
+    const token: string = localStorage.getItem('access_recovery') ?? '';
 
     return {
         Authorization: `Bearer ${token}`
@@ -49,7 +49,7 @@ export function headerAuthorizationRecovery(): RawAxiosRequestHeaders | AxiosHea
 
 export function userLogged(): boolean {
     try {
-        let token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
+        const token: ITokenContract = JSON.parse(localStorage.getItem('access_secure') ?? '')
         return true;
     } catch {
         return false;
