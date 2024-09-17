@@ -3,78 +3,78 @@
 @import url('@/assets/pico-2/css/pico.pumpkin.min.css');
 
 .main {
-    margin-top: 150px;
+	margin-top: 150px;
 }
 
 .btn {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .btn-text {
-    cursor: pointer;
-    color: #af3c2a;
-    text-decoration: dotted underline;
+	cursor: pointer;
+	color: #af3c2a;
+	text-decoration: dotted underline;
 }
 
 .default-border {
-    border: 1px solid #feb1a6;
-    box-shadow: 0 0 5px #feb1a6;
+	border: 1px solid #feb1a6;
+	box-shadow: 0 0 5px #feb1a6;
 }
 
 [data-tooltip]:not(a, button, input) {
-    border-bottom: unset;
+	border-bottom: unset;
 }
 
-:root:not([data-theme=dark]), [data-theme=light] {
-    --pico-primary: #feb1a6;
-    --pico-primary-background: #feb1a6;
-    --pico-primary-hover: #b18077;
-    --pico-primary-hover-background: #ac5647;
-    --pico-background-color: #f3f2ed30;
-    --pico-color: #8d5a53;
-    --pico-border-color: #feb1a6;
-    --pico-muted-border-color: #b19d9559;
+:root:not([data-theme='dark']),
+[data-theme='light'] {
+	--pico-primary: #feb1a6;
+	--pico-primary-background: #feb1a6;
+	--pico-primary-hover: #b18077;
+	--pico-primary-hover-background: #ac5647;
+	--pico-background-color: #f3f2ed30;
+	--pico-color: #8d5a53;
+	--pico-border-color: #feb1a6;
+	--pico-muted-border-color: #b19d9559;
 }
 
 :root {
-    background-color: #fff6ed;
-    --pico-font-family: Dosis;
-    --pico-border-radius: 0.8rem;
-    --pico-typography-spacing-vertical: 0.3rem;
-    --pico-form-element-spacing-vertical: 1rem;
-    --pico-form-element-spacing-horizontal: 1.25rem;
-    
-    --primary-color: var(--pico-primary);
-    --secondary-color: var(--pico-primary-background);
-    --hover-color: var(--pico-primary-hover);
+	background-color: #fff6ed;
+	--pico-font-family: Dosis;
+	--pico-border-radius: 0.8rem;
+	--pico-typography-spacing-vertical: 0.3rem;
+	--pico-form-element-spacing-vertical: 1rem;
+	--pico-form-element-spacing-horizontal: 1.25rem;
+
+	--primary-color: var(--pico-primary);
+	--secondary-color: var(--pico-primary-background);
+	--hover-color: var(--pico-primary-hover);
 }
-  
-  *::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
-  }
-  
-  *::-webkit-scrollbar-track {
-    border-radius: 4px;
-    background-color: var(--primary-color);
-    border: 4px solid #fff6ed;
-  }
-  
-  *::-webkit-scrollbar-track:hover {
-    background-color: var(--hover-color);
-  }
-  
-  *::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: var(--secondary-color);
-    border: 1px solid #fff6ed;
-  }
-  
-  *::-webkit-scrollbar-thumb:hover {
-    border: 1px solid var(--pico-primary-hover-background);
-  }
-  
-  *::-webkit-scrollbar-thumb:active {
-    background-color: var(--pico-primary-hover-background)
-  }
-  
+
+*::-webkit-scrollbar {
+	height: 12px;
+	width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+	border-radius: 4px;
+	background-color: var(--primary-color);
+	border: 4px solid #fff6ed;
+}
+
+*::-webkit-scrollbar-track:hover {
+	background-color: var(--hover-color);
+}
+
+*::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: var(--secondary-color);
+	border: 1px solid #fff6ed;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	border: 1px solid var(--pico-primary-hover-background);
+}
+
+*::-webkit-scrollbar-thumb:active {
+	background-color: var(--pico-primary-hover-background);
+}

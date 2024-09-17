@@ -1,4 +1,4 @@
 export enum Responsible {
-    pai = 0,
-    mae = 1
+	pai = 0,
+	mae = 1,
 }

@@ -1,7 +1,7 @@
-import type { IProfile } from "./profile";
+import type { IProfile } from './profile';
 
 export interface IFamilyProfiles {
-	father: IProfile
-	mother: IProfile
-	babys: IProfile[]
+	father: IProfile;
+	mother: IProfile;
+	babys: IProfile[];
 }

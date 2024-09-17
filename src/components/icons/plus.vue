@@ -1,5 +1,16 @@
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" focusable="false" viewBox="0 0 12 12">
-      <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 2v8m4-4H2" />
-    </svg>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="28"
+		height="28"
+		focusable="false"
+		viewBox="0 0 12 12"
+	>
+		<path
+			stroke="currentColor"
+			stroke-linecap="round"
+			stroke-width="2"
+			d="M6 2v8m4-4H2"
+		/>
+	</svg>
 </template>

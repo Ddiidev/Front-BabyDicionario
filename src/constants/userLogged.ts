@@ -1,5 +1,5 @@
-import { UserLogged } from "@/models/userLogged";
+import { UserLogged } from '@/models/userLogged';
 
 export class CurrentUserLogged {
-    public static userLogged: UserLogged = new UserLogged();
+	public static userLogged: UserLogged = new UserLogged();
 }

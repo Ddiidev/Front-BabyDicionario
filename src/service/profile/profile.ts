@@ -1,9 +1,13 @@
-import * as auth from "@/auth/auth";
-import confs from "@/constants/conf";
-import { StatusContractApi, type IContractApi, type IContractApiNoContent } from "@/contracts/api/contractApi";
-import type { IFamilyProfiles } from "@/models/familyProfiles";
-import type { IProfile } from "@/models/profile";
-import axios from "axios";
+import * as auth from '@/auth/auth';
+import confs from '@/constants/conf';
+import {
+	StatusContractApi,
+	type IContractApi,
+	type IContractApiNoContent,
+} from '@/contracts/api/contractApi';
+import type { IFamilyProfiles } from '@/models/familyProfiles';
+import type { IProfile } from '@/models/profile';
+import axios from 'axios';
 
 /**
  * Recupera o perfil da família do servidor.
@@ -11,19 +15,25 @@ import axios from "axios";
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
 export async function loadFamilyProfile(): Promise<IFamilyProfiles> {
-    let dataProfile: IFamilyProfiles = {} as IFamilyProfiles;
-    try {
-        const userDetails = await axios.get<IContractApi<IFamilyProfiles>>(`${confs.server}/profile/all-family`, {
-            headers: auth.headerAuthorization()
-        });
+	let dataProfile: IFamilyProfiles = {} as IFamilyProfiles;
+	try {
+		const userDetails = await axios.get<IContractApi<IFamilyProfiles>>(
+			`${confs.server}/profile/all-family`,
+			{
+				headers: auth.headerAuthorization(),
+			},
+		);
 
-        if (userDetails.data.status == StatusContractApi.info && userDetails.data.content !== undefined)
-            dataProfile = Object.assign(dataProfile, userDetails.data.content!);
-    } catch (err: any) {
-        throw err;
-    }
+		if (
+			userDetails.data.status == StatusContractApi.info &&
+			userDetails.data.content !== undefined
+		)
+			dataProfile = Object.assign(dataProfile, userDetails.data.content!);
+	} catch (err: any) {
+		throw err;
+	}
 
-    return dataProfile;
+	return dataProfile;
 }
 
 /**
@@ -34,17 +44,17 @@ export async function loadFamilyProfile(): Promise<IFamilyProfiles> {
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
 export async function saveProfile(profile: IProfile) {
-
-    try {
-        await axios.put<IContractApiNoContent>(`${confs.server}/profile/`,
-            profile,
-            {
-                headers: auth.headerAuthorization(),
-            }
-        );
-    } catch (err: any) {
-        throw err;
-    }
+	try {
+		await axios.put<IContractApiNoContent>(
+			`${confs.server}/profile/`,
+			profile,
+			{
+				headers: auth.headerAuthorization(),
+			},
+		);
+	} catch (err: any) {
+		throw err;
+	}
 }
 
 /**
@@ -53,23 +63,27 @@ export async function saveProfile(profile: IProfile) {
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
 export async function newProfile(profile: IProfile): Promise<IProfile> {
-    let result = {} as IProfile;
-    try {
-        const response = await axios.post<IContractApi<IProfile>>(`${confs.server}/profile/`,
-            profile,
-            {
-                headers: auth.headerAuthorization(),
-            }
-        );
+	let result = {} as IProfile;
+	try {
+		const response = await axios.post<IContractApi<IProfile>>(
+			`${confs.server}/profile/`,
+			profile,
+			{
+				headers: auth.headerAuthorization(),
+			},
+		);
 
-        if (response.data.status != StatusContractApi.info || response.data.content === undefined) {
-            throw response.data.message;
-        }
+		if (
+			response.data.status != StatusContractApi.info ||
+			response.data.content === undefined
+		) {
+			throw response.data.message;
+		}
 
-        result = Object.assign(result, response.data.content!);
-    } catch (err: any) {
-        throw err;
-    }
+		result = Object.assign(result, response.data.content!);
+	} catch (err: any) {
+		throw err;
+	}
 
-    return result;
+	return result;
 }
