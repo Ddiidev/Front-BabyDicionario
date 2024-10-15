@@ -1,5 +1,9 @@
 import type { Responsible } from '@/contracts/contracts_shared/responsavel';
 
+export interface IProfileContent extends IProfile {
+	_birth_date: string;
+}
+
 export interface IProfile {
 	uuid?: string;
 	short_uuid: string;
@@ -15,6 +19,7 @@ export interface IProfile {
 	height: number;
 	color: string;
 	currentImage?: string;
+	wordsCount: number;
 }
 
 export function newEmptyProfile(): IProfile {
@@ -31,9 +36,10 @@ export function newEmptyProfile(): IProfile {
 		height: 0,
 		color: '',
 		currentImage: undefined,
+		wordsCount: 0,
 	};
 }
 
 export function isProfile(p?: IProfile): p is IProfile {
-	return p !== undefined;
+	return p?.uuid !== undefined && p?.uuid !== '';
 }

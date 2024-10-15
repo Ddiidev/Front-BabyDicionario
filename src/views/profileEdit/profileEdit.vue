@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import ToolButton from '@/components/ToolButton.vue';
 import NavBar from '@/components/NavBar.vue';
-import { userLogged } from '@/auth/auth';
 import router from '@/router';
-import confs from '@/constants/conf';
-import { CurrentUserLogged } from '@/constants/userLogged';
 
-if (!userLogged()) {
-	router.push({
-		path: '/',
-	});
-}
 </script>
 
 <template>
@@ -25,28 +17,13 @@ if (!userLogged()) {
 						<p class="center-text">
 							{{ profileEditImpl.data.first_name }}
 						</p>
-						<label
-							for="file-upload"
-							class="edit_img"
-							data-tooltip="Mudar a imagem"
-							data-placement="bottom"
-						>
-							<img
-								class="circular-image default-border"
-								style="width: 5em; height: 5em"
-								:src="
-									profileEditImpl.dataState
-										.currentImageProfile
-								"
-							/>
+						<label for="file-upload" class="edit_img" data-tooltip="Mudar a imagem" data-placement="bottom">
+							<img class="circular-image default-border" style="width: 5em; height: 5em"
+								:src="profileEditImpl.dataState.currentImageProfile" />
 							<i class="fas fa-edit"></i>
 						</label>
-						<input
-							id="file-upload"
-							@change="profileEditImpl.onFileSelected"
-							type="file"
-							style="display: none"
-						/>
+						<input id="file-upload" @change="profileEditImpl.onFileSelected" type="file"
+							style="display: none" />
 					</div>
 				</header>
 			</div>
@@ -55,72 +32,39 @@ if (!userLogged()) {
 				<fieldset class="grid">
 					<label>
 						Primeiro nome
-						<input
-							v-model="profileEditImpl.data.first_name"
-							name="first_name"
-							placeholder="Primeiro nome"
-							autocomplete="given-name"
-							:aria-invalid="
-								profileEditImpl.dataState.invalidFirstName
-							"
-							aria-describedby="valid-first-name"
-						/>
-						<small
-							v-if="profileEditImpl.dataState.invalidFirstName"
-							id="valid-first-name"
-							>Preencha o primeiro nome</small
-						>
+						<input v-model="profileEditImpl.data.first_name" name="first_name" placeholder="Primeiro nome"
+							autocomplete="given-name" :aria-invalid="profileEditImpl.dataState.invalidFirstName
+								" aria-describedby="valid-first-name" />
+						<small v-if="profileEditImpl.dataState.invalidFirstName" id="valid-first-name">Preencha o
+							primeiro nome</small>
 					</label>
 					<label>
 						Segundo nome
-						<input
-							v-model="profileEditImpl.data.last_name"
-							name="last_name"
-							placeholder="Segundo nome"
-							autocomplete="additional-name"
-						/>
+						<input v-model="profileEditImpl.data.last_name" name="last_name" placeholder="Segundo nome"
+							autocomplete="additional-name" />
 					</label>
 				</fieldset>
 				<fieldset class="grid">
 					<label>
 						Apelido
-						<input
-							v-model="profileEditImpl.data.surname"
-							name="surname"
-							placeholder="Apelido"
-							autocomplete="nickname"
-						/>
+						<input v-model="profileEditImpl.data.surname" name="surname" placeholder="Apelido"
+							autocomplete="nickname" />
 					</label>
 					<div class="grid">
 						<label>
 							Cor
-							<input
-								v-model="profileEditImpl.data.color"
-								name="color"
-								placeholder="Cor"
-							/>
+							<input v-model="profileEditImpl.data.color" name="color" placeholder="Cor" />
 						</label>
 						<label>
 							Nascimento
-							<input
-								type="date"
-								id="birthdate"
-								v-model="profileEditImpl.data._birth_date"
-								aria-label="Date"
-								:aria-invalid="
-									profileEditImpl.dataState
-										.invalidDataNascimento
-								"
-								aria-describedby="valid-birthdate"
-							/>
-							<small
-								v-if="
-									profileEditImpl.dataState
-										.invalidDataNascimento
-								"
-								id="valid-birthdate"
-								>Data inválida</small
-							>
+							<input type="date" id="birthdate" v-model="profileEditImpl.data._birth_date"
+								aria-label="Date" :aria-invalid="profileEditImpl.dataState
+									.invalidDataNascimento
+									" aria-describedby="valid-birthdate" />
+							<small v-if="
+								profileEditImpl.dataState
+									.invalidDataNascimento
+							" id="valid-birthdate">Data inválida</small>
 						</label>
 					</div>
 				</fieldset>
@@ -130,12 +74,8 @@ if (!userLogged()) {
 						Peso
 						<div>
 							<div class="wrapper">
-								<input
-									v-model="profileEditImpl.data._weight"
-									name="weight"
-									class="form-control"
-									placeholder="0,42"
-								/>
+								<input v-model="profileEditImpl.data._weight" name="weight" class="form-control"
+									placeholder="0,42" />
 								<span class="units">kg</span>
 							</div>
 						</div>
@@ -144,12 +84,8 @@ if (!userLogged()) {
 						Altura
 						<div>
 							<div class="wrapper">
-								<input
-									v-model="profileEditImpl.data._height"
-									name="height"
-									class="form-control"
-									placeholder="0,49"
-								/>
+								<input v-model="profileEditImpl.data._height" name="height" class="form-control"
+									placeholder="0,49" />
 								<span class="units">cm</span>
 							</div>
 						</div>
@@ -159,64 +95,55 @@ if (!userLogged()) {
 				<div class="grid">
 					<fieldset style="margin: 3% 0 0 20%">
 						<legend>Sexo:</legend>
-						<input
-							type="radio"
-							id="Masculino"
-							@click="
-								profileEditImpl.data._sex =
-									profileEditImpl.Sex.masculino
-							"
-							:checked="
-								profileEditImpl.data._sex ==
-								profileEditImpl.Sex.masculino
-							"
-						/>
+						<input type="radio" id="Masculino" @click="
+							profileEditImpl.data._sex =
+							profileEditImpl.Sex.male
+							" :checked="profileEditImpl.data._sex ==
+								profileEditImpl.Sex.male
+								" />
 						<label htmlFor="Masculino">Masculino</label>
 
-						<input
-							type="radio"
-							id="Feminino"
-							@click="
-								profileEditImpl.data._sex =
-									profileEditImpl.Sex.feminino
-							"
-							:checked="
-								profileEditImpl.data._sex ==
-								profileEditImpl.Sex.feminino
-							"
-						/>
+						<input type="radio" id="Feminino" @click="
+							profileEditImpl.data._sex =
+							profileEditImpl.Sex.female
+							" :checked="profileEditImpl.data._sex ==
+								profileEditImpl.Sex.female
+								" />
 						<label htmlFor="Feminino">Feminino</label>
 					</fieldset>
 
 					<label>
-						Nome compartilável
-						<input
-							v-model="profileEditImpl.data.name_shared_link"
-							name="name_shared_link"
-							autosave="name_shared_link"
-							:aria-invalid="
-								profileEditImpl.dataState.invalidNameSharedLink
-							"
-							aria-describedby="valid-name-shared-link"
-							placeholder="Nome compartilhável"
-							@keypress="profileEditImpl.onChangeNameShared()"
-						/>
-						<small
-							v-if="
-								profileEditImpl.dataState.invalidNameSharedLink
-							"
-							id="valid-name-shared-link"
-							>Nome inválido! Precisa ser maior que 3
-							caracteres.</small
-						>
+						Nome compartilhável
+						<input v-model="profileEditImpl.data.name_shared_link" name="name_shared_link"
+							autosave="name_shared_link" :aria-invalid="profileEditImpl.dataState.invalidNameSharedLink
+								" aria-describedby="valid-name-shared-link" placeholder="Nome compartilhável"
+							@keypress="profileEditImpl.onChangeNameShared()" />
+						<small v-if="
+							profileEditImpl.dataState.invalidNameSharedLink
+						" id="valid-name-shared-link">Nome inválido! Precisa ser maior que 3
+							caracteres.</small>
 					</label>
 				</div>
 
-				<ToolButton class="btSave" @click="profileEditImpl.save()"
-					>Salvar</ToolButton
-				>
+				<div style="display: flex; justify-content: center;">
+					<ToolButton style="width: 10%" v-if="profileEditImpl.dataState.visibleDeleteProfileButton" delete
+						@click="profileEditImpl.dataState.viewerModalDelete = true">Excluir</ToolButton>
+
+					<ToolButton style="width: 45%" @click="profileEditImpl.save()">Salvar</ToolButton>
+				</div>
 			</div>
 		</article>
+
+		<dialog :open="profileEditImpl.dataState.viewerModalDelete">
+			<article>
+				<h2>Deletar perfil</h2>
+				<p>Tem certeza que deseja deletar o perfil?</p>
+				<footer>
+					<ToolButton @click="profileEditImpl.dataState.viewerModalDelete = false">Cancelar</ToolButton>
+					<ToolButton delete @click="profileEditImpl.deleteProfile()">Confirmar</ToolButton>
+				</footer>
+			</article>
+		</dialog>
 	</main>
 </template>
 
@@ -225,6 +152,7 @@ import ToolButtonBack from '@/components/ToolButtonBack.vue';
 import * as profileEditImpl from './profileEdit';
 import { useRoute } from 'vue-router';
 import { defineComponent } from 'vue';
+import { Responsible } from '@/contracts/contracts_shared/responsavel';
 
 export default defineComponent({
 	data() {
@@ -243,7 +171,9 @@ export default defineComponent({
 			this.$nextTick(async () => {
 				profileEditImpl.mounted(this);
 			});
-		} catch {}
+		} catch (error) {
+			console.error(error);
+		}
 	},
 	beforeUnmount() {
 		profileEditImpl.unmounted();
@@ -362,8 +292,13 @@ export default defineComponent({
 	transform: translateY(-30%);
 }
 
-.btSave {
-	width: 70%;
-	margin-left: 15%;
+.action-button {
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.action-button.save {
+	width: 41%;
+	margin-right: 1%;
 }
 </style>

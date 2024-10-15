@@ -19,13 +19,16 @@ export class UserLogged {
 	public getNameComplete(): string {
 		return `${this.first_name} ${this.last_name}`;
 	}
+	isLogged(): boolean {
+		return !(this.uuid == undefined || this.uuid == '');
+	}
 }
 
 // TODO: Torana-lo genérico o mais breve
 export function getResponsibleValue(s: string): Responsible | undefined {
 	const mapping: { [key: string]: Responsible } = {
-		pai: Responsible.pai,
-		mae: Responsible.mae,
+		pai: Responsible.father,
+		mae: Responsible.mother,
 	};
 	return mapping[s];
 }

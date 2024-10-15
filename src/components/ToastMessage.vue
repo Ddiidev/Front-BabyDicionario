@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<IToastProps>(), {
 							@click="closeButton"
 							class="outline primary min-button"
 						>
-							close <small>✕</small>
+							fechar <small>✕</small>
 						</button>
 					</li>
 				</ul>

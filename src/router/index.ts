@@ -1,28 +1,28 @@
 import {
 	createRouter,
 	createWebHashHistory,
-	createWebHistory,
+	// createWebHistory,
 } from 'vue-router';
 const router = createRouter({
 	history: createWebHashHistory(),
 	routes: [
 		{
 			path: '/',
-			component: () => import('../views/Home.vue'),
+			component: () => import('@/views/Home.vue'),
 		},
 		{
 			path: '/userHome',
-			component: () => import('../views/homeLogged/Home.vue'),
+			component: () => import('@/views/homePrincipal/HomeView.vue'),
 		},
 		{
 			name: 'userProfileEdit',
 			path: '/userProfileEdit/:short_uuid/:name_shared',
-			component: () => import('../views/profileEdit/profileEdit.vue'),
+			component: () => import('@/views/profileEdit/profileEdit.vue'),
 		},
 		{
 			path: '/profile/:id/:name',
 			name: 'profile',
-			component: () => import('@/views/profile/Profile.vue'),
+			component: () => import('@/views/profile/profileView.vue'),
 		},
 		{
 			path: '/createUser',
@@ -30,9 +30,9 @@ const router = createRouter({
 			component: () => import('@/views/user/CreateUser.vue'),
 		},
 		{
-			path: '/words/:short_uuid',
+			path: '/words/:shortUUID/:nameShared',
 			name: 'Words',
-			component: () => import('@/views/words/Words.vue'),
+			component: () => import('@/views/words/WordsView.vue'),
 		}
 	],
 });

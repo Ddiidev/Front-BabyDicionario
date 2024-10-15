@@ -3,7 +3,7 @@
 import EyeClose from '@/components/icons/EyeClose.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import EyeOpen from '@/components/icons/EyeOpen.vue';
-import * as LoginImpl from './Login';
+import * as LoginImpl from './login';
 
 const props = withDefaults(defineProps<{ tagRef: string }>(), {
 	tagRef: undefined,

@@ -38,7 +38,7 @@ if (userLogged()) {
 				"
 				class="grid"
 			>
-				<router-link to="/register">
+				<router-link to="/userHome">
 					<ToolButton
 						class="tooltip"
 						data-tooltip="Realize o cadastro e comece registrar novas palavrinhas"

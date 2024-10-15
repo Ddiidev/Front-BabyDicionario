@@ -78,3 +78,34 @@
 *::-webkit-scrollbar-thumb:active {
 	background-color: var(--pico-primary-hover-background);
 }
+
+
+.zoom-in {
+	animation: zoomIn 0.3s forwards;
+}
+
+.zoom-out {
+	animation: zoomOut 0.3s forwards;
+}
+
+@keyframes zoomIn {
+	0% {
+		transform: scale(0);
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes zoomOut {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(0);
+		opacity: 0;
+	}
+}

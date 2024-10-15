@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ToolButton from '@/components/ToolButton.vue';
-import * as userLoggedImpl from './UserLogged';
+import * as userLoggedImpl from './UserLogin';
 
 const props = withDefaults(defineProps<{ tagRef: string }>(), {
 	tagRef: undefined,
@@ -136,7 +136,9 @@ export default defineComponent({
 
 			userLoggedImpl.setThis(this);
 			await userLoggedImpl.mounted();
-		} catch {}
+		} catch (error) {
+			console.log(error);
+		}
 	},
 	methods: {
 		setVisible: userLoggedImpl.setVisible,

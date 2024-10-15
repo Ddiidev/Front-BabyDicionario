@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import UserLogged from '@/views/userLogged/UserLogged.vue';
+import UserLogged from '@/views/userLogin/UserLogin.vue';
 import ToolButton from '@/components/ToolButton.vue';
 import Login from '@/views/login/Login.vue';
-import Toast from './Toast.vue';
+import Toast from './ToastMessage.vue';
 
 Emitter.listen(
 	'msg-login',
@@ -140,6 +140,7 @@ Emitter.listen(
 		style="z-index: 99999"
 		tagRef="btUserLogged"
 	></UserLogged>
+	<!-- eslint-disable-next-line vue/valid-v-for -->
 	<Toast
 		style="z-index: 5000; position: fixed"
 		v-for="toast in toastData.toasts.value"
@@ -157,10 +158,11 @@ import { Emitter } from '@/utils/emitter';
 import { defineComponent, type ComponentPublicInstance, ref } from 'vue';
 import { HandleDataToast } from './HandleToast';
 import * as auth from '@/auth/auth';
-import { imageProfile } from '@/utils/imageProfile';
+import { getPathImageDefault, imageProfile } from '@/utils/imageProfile';
 import { CurrentUserLogged } from '@/constants/userLogged';
 import { getSexDefaultFromResponsible } from '@/utils/sexAndResponsible';
 import { dataCurrentUserLogged } from '@/service/user/user';
+import { Sex } from '@/views/profileEdit/profileEdit';
 
 function getComponent(obj: any, nameObj: any) {
 	let result;
@@ -201,6 +203,7 @@ export default defineComponent({
 
 		try {
 			await dataCurrentUserLogged();
+
 			this.currentImage =
 				(await imageProfile(
 					CurrentUserLogged.userLogged.uuid!,
@@ -208,6 +211,9 @@ export default defineComponent({
 					getSexDefaultFromResponsible(
 						CurrentUserLogged.userLogged.responsible!,
 					),
+					async (image: Promise<string>) => {
+						this.currentImage = await image;
+					}
 				)) ?? '';
 		} catch (err) {
 			console.log(err);
@@ -217,7 +223,7 @@ export default defineComponent({
 		return {
 			menuDefault: true,
 			userLogged: ref(false),
-			currentImage: ref(''),
+			currentImage: ref(getPathImageDefault('', Sex.male)),
 		};
 	},
 	profileEditImpl() {

@@ -76,8 +76,8 @@ async function sendEmail() {
 	try {
 		//TODO: Melhorar
 		const responsavel: Responsible = form_data.pai
-			? Responsible.pai
-			: Responsible.mae;
+			? Responsible.father
+			: Responsible.mother;
 
 		const contract: IContractEmail = {
 			email: form_data.email,
@@ -178,7 +178,7 @@ export function nextStep() {
 	sessionStorage.setItem('user_name', form_data.primeiro_nome);
 	sessionStorage.setItem(
 		'responsavel',
-		form_data.pai ? Responsible.pai.toString() : Responsible.mae.toString(),
+		form_data.pai ? Responsible.father.toString() : Responsible.mother.toString(),
 	);
 	sessionStorage.setItem('email', form_data.email);
 

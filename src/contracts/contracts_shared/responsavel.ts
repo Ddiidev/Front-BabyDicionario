@@ -1,4 +1,4 @@
 export enum Responsible {
-	pai = 0,
-	mae = 1,
+	father = 0,
+	mother = 1,
 }

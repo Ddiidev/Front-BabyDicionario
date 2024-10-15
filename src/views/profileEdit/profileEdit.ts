@@ -1,20 +1,21 @@
-import { reactive, ref } from 'vue';
-import { currentProfile, getProfile } from '../profile/profile';
+import { getPathImageDefault, imageProfile } from '@/utils/imageProfile';
+import { Responsible } from '@/contracts/contracts_shared/responsavel';
+import { newProfile, saveProfile } from '@/service/profile/profile';
 import { newEmptyProfile, type IProfile } from '@/models/profile';
+import { uploadImageProfile } from '@/service/storage/storage';
+import { dataCurrentUserLogged } from '@/service/user/user';
+import { CurrentUserLogged } from '@/constants/userLogged';
+import { getProfile } from '../profile/profileView';
+import { Emitter } from '@/utils/emitter';
+import { reactive, ref } from 'vue';
+import router from '@/router';
 import {
 	formatarValorInput,
 	stringDateToUnix,
 	unixDateToString,
 } from '../utils';
-import { newProfile, saveProfile } from '@/service/profile/profile';
-import { Emitter } from '@/utils/emitter';
-import { Responsible } from '@/contracts/contracts_shared/responsavel';
-import router from '@/router';
-import { getPathImage, uploadImageProfile } from '@/service/storage/storage';
-import { dataCurrentUserLogged } from '@/service/user/user';
-import { CurrentUserLogged } from '@/constants/userLogged';
-import axios from 'axios';
-import { imageProfile } from '@/utils/imageProfile';
+import { deleteLocalPhotoProfile, deleteLocalProfile, deleteLocalWordsFromProfile, getLocalProfile, newLocalPhotoProfile, newLocalProfile, saveLocalProfile } from '@/service/profile/localProfile';
+import * as servProfile from '@/service/profile/profile';
 
 export let self: any;
 export function setThis(me: any) {
@@ -22,8 +23,8 @@ export function setThis(me: any) {
 }
 
 export enum Sex {
-	masculino = 0,
-	feminino = 1,
+	male = 0,
+	female = 1,
 }
 
 enum NewUser {
@@ -33,7 +34,6 @@ enum NewUser {
 }
 
 export interface IProfileEdit extends IProfile {
-	uuid?: string;
 	name_shared?: string;
 	_birth_date: string;
 	_sex: Sex;
@@ -47,41 +47,56 @@ export interface IProfileStateEdit {
 	invalidDataNascimento: boolean;
 	newUser?: NewUser;
 	isEmptyNameSharedLink: boolean;
+	viewerModalDelete: boolean;
 	imageFile?: File;
 	currentImageProfile?: string;
+	visibleDeleteProfileButton: boolean;
 }
 
-export let data = reactive<IProfileEdit>({
-	...newEmptyProfile(),
-	uuid: '',
-	name_shared: '',
-	_birth_date: '',
-	_sex: Sex.masculino,
-	_weight: '0.00',
-	_height: '0.00',
-});
+export let data = reactive<IProfileEdit>(newEmptyProfileEdit());
 
 export let dataState = reactive<IProfileStateEdit>({
+	currentImageProfile: getPathImageDefault('', Sex.male),
 	invalidFirstName: false,
 	invalidNameSharedLink: false,
 	invalidDataNascimento: false,
 	isEmptyNameSharedLink: true,
+	viewerModalDelete: false,
+	visibleDeleteProfileButton: false
 });
+
+export function visibleDeleteProfileButton(): void {
+	dataState.visibleDeleteProfileButton = true;
+	if (dataState.newUser != undefined)
+		dataState.visibleDeleteProfileButton = false;
+
+	if (data.responsible != undefined && [Responsible.father, Responsible.mother].includes(data.responsible))
+		dataState.visibleDeleteProfileButton = false;
+}
 
 async function loadProfile() {
 	const suuid = data.uuid!;
-	const profile = await getProfile(suuid, data.name_shared);
-	data = Object.assign(data, profile);
-	data._sex = profile.sex as Sex;
-	data.short_uuid = suuid;
-	data._height = data.height.toFixed(2);
-	data._weight = data.weight.toFixed(2);
-	data._birth_date = unixDateToString(data.birth_date);
+	let profile: IProfile | undefined;
+	if (!CurrentUserLogged.userLogged.isLogged()) {
+		profile = getLocalProfile(suuid);
+	} else {
+		profile = await getProfile(suuid, data.name_shared);
+	}
 
-	if (data.first_name !== undefined || data.first_name !== '')
-		dataState.isEmptyNameSharedLink = false;
+	if (profile) {
+		Object.assign(data, profile);
 
-	validData();
+		data._sex = profile.sex as Sex;
+		data.short_uuid = suuid;
+		data._height = data.height.toFixed(2);
+		data._weight = data.weight.toFixed(2);
+		data._birth_date = unixDateToString(data.birth_date);
+
+		if (data.first_name !== undefined || data.first_name !== '')
+			dataState.isEmptyNameSharedLink = false;
+
+		validData();
+	}
 }
 
 export function watch() {
@@ -135,12 +150,18 @@ export async function mounted(self: any) {
 
 	try {
 		await dataCurrentUserLogged();
-	} catch {}
+	} catch (error) {
+		console.log(error);
+	}
 
-	if (data.uuid == 'newFather') dataState.newUser = NewUser.pai;
-	else if (data.uuid == 'newMother') dataState.newUser = NewUser.mae;
-	else if (data.uuid == 'newBaby') dataState.newUser = NewUser.baby;
-	else await loadProfile();
+	if (data.uuid == 'newFather')
+		dataState.newUser = NewUser.pai;
+	else if (data.uuid == 'newMother')
+		dataState.newUser = NewUser.mae;
+	else if (data.uuid == 'newBaby')
+		dataState.newUser = NewUser.baby;
+	else
+		await loadProfile();
 
 	if (dataState.newUser !== undefined && dataState.newUser !== NewUser.baby)
 		data.responsible = dataState.newUser as number as Responsible;
@@ -150,22 +171,67 @@ export async function mounted(self: any) {
 			CurrentUserLogged.userLogged.uuid!,
 			data.uuid!,
 			data.sex,
+			async (image: Promise<string>) => {
+				dataState.currentImageProfile = await image;
+			}
 		);
 	} catch (err) {
 		console.log(err);
 	}
+
+	/**
+	 * Gambiarra das brabas
+	 * Pois por algum motivo quando carrega a página pela primeira vez pelo sistema de rotas
+	 * os eventos de watch, não funcionam como deveriam e acabam quebrando tudo
+	 * então foi feito essa gambiarra para que sempre que essa condição seja verdadeira
+	 * a página recarregue.
+	 * TODO: Remover essa gambiarra após consertar a causa do erro
+	 */
+	if (Object.keys(data).length === 2 && 'name_shared' in data && 'uuid' in data) {
+		window.location.reload();
+	}
+
+	visibleDeleteProfileButton();
 }
 
 export async function save() {
-	if (!validData()) return;
+	if (!validData())
+		return;
 
 	try {
-		// debugger;
-		if (dataState.newUser !== undefined) {
+		if (!CurrentUserLogged.userLogged.isLogged()) {
+			let profileCreated: IProfile = data;
+			if (dataState.newUser !== undefined) {
+				profileCreated = newLocalProfile(data);
+			} else {
+				profileCreated = saveLocalProfile(data);
+			}
+
+			const newUuid = profileCreated.short_uuid;
+			const newNameShared = profileCreated.name_shared_link;
+
+			if (dataState.imageFile !== undefined)
+				await newLocalPhotoProfile(dataState.imageFile!, profileCreated);
+
+			router.push(`/userProfileEdit/${newUuid}/${newNameShared}`);
+
+			setTimeout(() => {
+				// eslint-disable-next-line no-self-assign
+				window.location.href = window.location.href;
+				window.location.reload();
+			}, 4000);
+
+			// Essa menssagem é direcionada como novo bebê, pois se não estiver logado só será possível adicionar bebês.
+			Emitter.emitt('msg-login', {
+				title: '✅ Salvo',
+				msg: 'Um novo bebê está na área!',
+			});
+
+		} else if (dataState.newUser !== undefined) {
 			const profileCreated = await newProfile(data);
 			const newUuid = profileCreated.short_uuid;
 			const newNameShared = profileCreated.name_shared_link;
-			data = Object.assign(data, profileCreated);
+			Object.assign(data, profileCreated);
 
 			if (dataState.imageFile !== undefined)
 				await uploadImageProfile(
@@ -182,6 +248,7 @@ export async function save() {
 			router.push(`/userProfileEdit/${newUuid}/${newNameShared}`);
 
 			setTimeout(() => {
+				// eslint-disable-next-line no-self-assign
 				window.location.href = window.location.href;
 				window.location.reload();
 			}, 4000);
@@ -208,10 +275,26 @@ export async function save() {
 				window.location.reload();
 			}, 4000);
 		}
-	} catch {}
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export function deleteProfile() {
+	if (!CurrentUserLogged.userLogged.isLogged()) {
+		deleteLocalProfile(data.uuid!);
+		deleteLocalWordsFromProfile(data.uuid!);
+		deleteLocalPhotoProfile(data.uuid!);
+	} else {
+		servProfile.deleteProfile(data.uuid!);
+	}
+
+	dataState.viewerModalDelete = false;
+	router.go(-1);
 }
 
 function validData() {
+	console.log(data);
 	if (data.first_name.trim() === '') {
 		dataState.invalidFirstName = true;
 		return false;
@@ -251,43 +334,14 @@ export function onFileSelected(event: any) {
 	reader.readAsDataURL(event.target.files[0]);
 }
 
-// export async function imageProfile(): Promise<boolean> {
-//     return new Promise(async (resolve) => {
-//         const img = getPathImage(CurrentUserLogged.userLogged.uuid!, data.uuid!);
-
-//         try {
-//             const imgBin = await axios.get(img, { responseType: 'blob' });
-
-//             const reader = new FileReader();
-//             reader.onload = (e) => {
-//                 dataState.currentImageProfile = e.target?.result?.toString();
-//                 resolve(true);
-//             };
-//             reader.onerror = () => resolve(false);
-
-//             reader.readAsDataURL(imgBin.data);
-//         } catch (err) {
-//             resolve(false);
-//         }
-//     });
-// }
-
-// export async function imageProfileDefault() {
-//     if (await imageProfile())
-//         return;
-
-//     let url = '';
-//     if (data.uuid == "newMother") {
-//         url = '/src/assets/imagens-temp/female-user.jpeg';
-//     } else if (data.uuid == "newFather") {
-//         url = '/src/assets/imagens-temp/male-user.jpeg';
-//     } else if (data.sex == Responsible.pai) {
-//         url = '/src/assets/imagens-temp/male-user.jpeg';
-//     } else if (data.sex == Responsible.mae) {
-//         url = '/src/assets/imagens-temp/female-user.jpeg';
-//     } else {
-//         url = '/src/assets/imagens-temp/add-photo.jpeg';
-//     }
-
-//     dataState.currentImageProfile = `http://${window.location.host}/${url}`;
-// }
+function newEmptyProfileEdit(): IProfileEdit {
+	return {
+		...newEmptyProfile(),
+		uuid: '',
+		name_shared: '',
+		_birth_date: '',
+		_sex: Sex.male,
+		_weight: '0.00',
+		_height: '0.00',
+	};
+}

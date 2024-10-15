@@ -1,11 +1,11 @@
 import type { IContractApi } from '@/contracts/api/contractApi';
-import type { IProfile } from '@/models/profile';
+import type { IProfileContent } from '@/models/profile';
 import { refreshToken } from '@/auth/auth';
 import getToken from '@/constants/token';
 import confs from '@/constants/conf';
 import { reactive } from 'vue';
 import axios from 'axios';
-import { dateUnixToString } from '../utils';
+import { unixDateToString } from '../utils';
 
 export async function getProfile(
 	uuid: string,
@@ -26,7 +26,7 @@ export async function getProfile(
 			},
 		);
 
-		res.data.content!._birth_date = dateUnixToString(
+		res.data.content!._birth_date = unixDateToString(
 			res.data.content?.birth_date!,
 		);
 
@@ -42,10 +42,6 @@ export async function getProfile(
 	return result;
 }
 
-interface IProfileContent extends IProfile {
-	_birth_date: string;
-}
-
 export const currentProfile = reactive<IProfileContent>({
 	surname: 'Pitxhico',
 	first_name: 'Dante',
@@ -59,6 +55,7 @@ export const currentProfile = reactive<IProfileContent>({
 	sex: 0,
 	height: 0,
 	color: '',
+	wordsCount: 0
 });
 
 export function resenha(): string {

@@ -16,22 +16,18 @@ import axios from 'axios';
  */
 export async function loadFamilyProfile(): Promise<IFamilyProfiles> {
 	let dataProfile: IFamilyProfiles = {} as IFamilyProfiles;
-	try {
-		const userDetails = await axios.get<IContractApi<IFamilyProfiles>>(
-			`${confs.server}/profile/all-family`,
-			{
-				headers: auth.headerAuthorization(),
-			},
-		);
+	const userDetails = await axios.get<IContractApi<IFamilyProfiles>>(
+		`${confs.server}/profile/all-family`,
+		{
+			headers: auth.headerAuthorization(),
+		},
+	);
 
-		if (
-			userDetails.data.status == StatusContractApi.info &&
-			userDetails.data.content !== undefined
-		)
-			dataProfile = Object.assign(dataProfile, userDetails.data.content!);
-	} catch (err: any) {
-		throw err;
-	}
+	if (
+		userDetails.data.status == StatusContractApi.info &&
+		userDetails.data.content !== undefined
+	)
+		dataProfile = Object.assign(dataProfile, userDetails.data.content!);
 
 	return dataProfile;
 }
@@ -44,17 +40,13 @@ export async function loadFamilyProfile(): Promise<IFamilyProfiles> {
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
 export async function saveProfile(profile: IProfile) {
-	try {
-		await axios.put<IContractApiNoContent>(
-			`${confs.server}/profile/`,
-			profile,
-			{
-				headers: auth.headerAuthorization(),
-			},
-		);
-	} catch (err: any) {
-		throw err;
-	}
+	await axios.put<IContractApiNoContent>(
+		`${confs.server}/profile/`,
+		profile,
+		{
+			headers: auth.headerAuthorization(),
+		},
+	);
 }
 
 /**
@@ -63,27 +55,33 @@ export async function saveProfile(profile: IProfile) {
  * @throws {Error} - Se o servidor retornar um código de status 401, indicando uma solicitação não autorizada.
  */
 export async function newProfile(profile: IProfile): Promise<IProfile> {
-	let result = {} as IProfile;
-	try {
-		const response = await axios.post<IContractApi<IProfile>>(
-			`${confs.server}/profile/`,
-			profile,
-			{
-				headers: auth.headerAuthorization(),
-			},
-		);
+	const response = await axios.post<IContractApi<IProfile>>(
+		`${confs.server}/profile/`,
+		profile,
+		{
+			headers: auth.headerAuthorization(),
+		},
+	);
 
-		if (
-			response.data.status != StatusContractApi.info ||
-			response.data.content === undefined
-		) {
-			throw response.data.message;
-		}
-
-		result = Object.assign(result, response.data.content!);
-	} catch (err: any) {
-		throw err;
+	if (
+		response.data.status != StatusContractApi.info ||
+		response.data.content === undefined
+	) {
+		throw response.data.message;
 	}
 
-	return result;
+	return response.data.content!;
 }
+
+export async function deleteProfile(profileUUID: string): Promise<boolean> {
+	const response = await axios.delete(`${confs.server}/profile/${profileUUID}`, {
+		headers: auth.headerAuthorization(),
+	});
+
+	if (response.data.status != StatusContractApi.info) {
+		throw response.data.message;
+	}
+
+	return response.data.content!;
+}
+

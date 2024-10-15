@@ -4,6 +4,6 @@ import ToolButton from '@/components/ToolButton.vue';
 
 <template>
 	<ToolButton style="display: block; margin-left: left" rel="prev">
-		<div style="transform: scaleX(-1); font-size: larger">➪</div>
+		<img style="width: 30px; height: 30px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACPElEQVR4nO2Yv2sUURDHJ/gLBRt/gKKdCIKV/gOCNhFsRJbszKLInW5uZj01hZ1wrUlmDo6AmIAKQhotBEuxEbTzRxBRVPwPJKKoEI2erJhzbwkS7nY9H7wPvPbNr52d+T4Aj8fj8QwCw9oxI5lX5AfTcbwBXMIwCY34m5G00zMZ1g6CKyhKpCSLS84r8XNnKmC5zCvJi2YUbwcX0FCwK/PIc62gvhVcQCOpGPL3jPNPFeMt4AJGXM07P3U82QwuYCSns84byRNnnFfiOJf5xxZUN4ELKMlJJfnRyXwk85kqFHIU+YMRvzKS20Zy9lJU31lYAIZ8/48xXija+eUDkq+KMjsxUt/lRAX+Eshni5LzhTdw0T0wXqlsbIay93ev3VvmE5u5GQSr+jKimJz6V3+hZpTsN5JHXUEQXyllDpQ1xBoHGqsN+Wp3NbhaxiSeKyuINsCQId/I2HpfiK10F8ovchOBbIMSsGBsfXp/pwrIzVK2USN+WdY2qpQcyVThXSMI1jqlB9oAQ0rytiOaqHbYOUVmJBc7iYrkkHOaeDqO1/yaR1FytIz7PR5PySjJNSX+osjnwDUslOHMTvQaXKI1XF+nyM8yk7gFrtBOJzDyTGYP+uTM41kjXaeJL+c0QQwuoGFtn5E87NICyNfhf2VJUloqmIjv5pRfqo1n+5aUvZAaVZI7fQj7BUO5kPYCDALFM3t6eo0gWTTkW+M4uhsGyYorgPJRkd+kD1uTJGN2YnTHQB33eDwe6IWfv2e/qygW++0AAAAASUVORK5CYII=">
 	</ToolButton>
 </template>

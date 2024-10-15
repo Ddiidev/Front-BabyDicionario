@@ -274,7 +274,7 @@ export function setVisible() {
 			}, 300);
 		}
 
-		function EventHandleResize() {
+		const EventHandleResize = () => {
 			if (self.tagRef == undefined || !visibleLogin) {
 				self.$forceUpdate();
 				return;

@@ -2,12 +2,11 @@
 import { useRoute } from 'vue-router';
 import NavBar from '@/components/NavBar.vue';
 import {
-	getProfile,
 	idadeBebe,
 	quantidadeIrmaos,
 	resenha,
 	currentProfile,
-} from './profile';
+} from './profileView';
 
 localStorage.setItem('current_id', useRoute().params.id.toString());
 localStorage.setItem('name', useRoute().params.name.toString());

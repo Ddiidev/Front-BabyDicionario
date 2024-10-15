@@ -17,7 +17,7 @@ import {
 import ToolButton from '@/components/ToolButton.vue';
 import * as ResponsiveUI from './ResponsiveUI';
 import NavBar from '@/components/NavBar.vue';
-import Toast from '@/components/Toast.vue';
+import Toast from '@/components/ToastMessage.vue';
 </script>
 
 <template>
@@ -26,6 +26,7 @@ import Toast from '@/components/Toast.vue';
 		style="padding-left: 3%; padding-right: 3%"
 		class="main container-fluid"
 	>
+		<!-- eslint-disable-next-line vue/valid-v-for -->
 		<Toast
 			v-for="toast in toastData.toasts.value"
 			:title="toast.title"
@@ -228,6 +229,7 @@ import Toast from '@/components/Toast.vue';
 					class="article_message-container"
 				>
 					<div class="message-container">
+						<!-- eslint-disable-next-line vue/require-v-for-key -->
 						<h5
 							v-for="(item, index) in messages"
 							:style="`animation-delay: ${index * 2}s`"

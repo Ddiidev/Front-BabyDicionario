@@ -60,14 +60,26 @@ export async function mounted() {
 }
 
 export function singOut() {
-	localStorage.clear();
-	sessionStorage.clear();
-	window.location.reload();
+	try {
+		const words = localStorage.getItem('words')
+		const profiles = localStorage.getItem('profiles')
+		localStorage.clear();
+		if (words) {
+			localStorage.setItem('words', words);
+		}
+		if (profiles) {
+			localStorage.setItem('profiles', profiles);
+		}
+		sessionStorage.clear();
+		window.location.reload();
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export function setVisible() {
 	try {
-		function EventHandleResize() {
+		const EventHandleResize = () => {
 			if (self.tagRef == undefined || !visibleUserLogged) {
 				self.$forceUpdate();
 				return;
@@ -89,12 +101,14 @@ export function setVisible() {
 				}
 				self.$forceUpdate();
 			}
-		}
+		};
 
 		window.removeEventListener('resize', EventHandleResize);
 		window.addEventListener('resize', EventHandleResize);
 		EventHandleResize();
-	} catch {}
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export function closePanel() {

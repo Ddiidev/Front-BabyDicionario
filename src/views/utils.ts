@@ -57,24 +57,14 @@ export function formatarValorInput(input: string) {
 			parseInt(parteInteiraFormatada[1]) >= 0
 		)
 			parteInteiraFormatada = parteInteiraFormatada.substring(1);
-	} catch {}
+	} catch (error) {
+		console.error(error);
+	}
 
 	const result =
 		parteInteiraFormatada + (parteDecimal ? '.' + parteDecimal : '');
 
 	return ['NaN', '', '0'].includes(result) ? '0.00' : result;
-}
-
-/**
- * Converte a data/hora Unix em uma string de data formatada.
- *
- * @param {number} date
- */
-export function dateUnixToString(date: number): string {
-	const [day, month, year] = new Date(parseInt(date.toString() + '000'))
-		.toLocaleDateString()
-		.split('/');
-	return `${year}-${month}-${day}`;
 }
 
 /**
@@ -84,8 +74,16 @@ export function dateUnixToString(date: number): string {
  * @throws {Error} Se a data for null ou undefined.
  */
 export function stringDateToUnix(date: string): number {
+	if (!isNaN(Number(date))) {
+		date = unixDateToString(Number(date));
+	}
+
 	const num_date = Date.parse(new Date(`${date} 00:00`).toISOString());
 	return Math.floor(num_date / 1000);
+}
+
+export function stringDateNow(): string {
+	return new Date().toISOString().split('T')[0];
 }
 
 /**
@@ -95,42 +93,48 @@ export function stringDateToUnix(date: string): number {
  * @throws {Error} Se o timestamp Unix for null ou undefined.
  */
 export function unixDateToString(unixTimestamp: number): string {
-	if (unixTimestamp === null || unixTimestamp === undefined) {
-		throw new Error('unixTimestamp cannot be null or undefined');
+
+	try {
+		if (unixTimestamp === null || unixTimestamp === undefined) {
+			throw new Error('unixTimestamp cannot be null or undefined');
+		}
+
+		const date = new Date(unixTimestamp * 1000);
+		if (isNaN(date.getTime())) {
+			throw new Error('unixTimestamp is an invalid date');
+		}
+
+		const intlOptions: Intl.DateTimeFormatOptions = {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+		};
+		const locale = navigator.language;
+		if (locale === null || locale === undefined) {
+			throw new Error('locale cannot be null or undefined');
+		}
+
+		const formattedDateParts = new Intl.DateTimeFormat(
+			locale,
+			intlOptions,
+		).formatToParts(date);
+		if (!formattedDateParts) {
+			throw new Error('toLocaleDateString returned null or undefined');
+		}
+
+		const year = formattedDateParts.find((part) => part.type === 'year')?.value;
+		const month = formattedDateParts.find(
+			(part) => part.type === 'month',
+		)?.value;
+		const day = formattedDateParts.find((part) => part.type === 'day')?.value;
+
+		if (year === undefined || month === undefined || day === undefined) {
+			throw new Error('Could not find year, month, or day in formatted date');
+		}
+
+		return `${year}-${month}-${day}`;
+	} catch (error) {
+		console.error(error);
+		return unixTimestamp.toString();
 	}
-
-	const date = new Date(unixTimestamp * 1000);
-	if (isNaN(date.getTime())) {
-		throw new Error('unixTimestamp is an invalid date');
-	}
-
-	const intlOptions: Intl.DateTimeFormatOptions = {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-	};
-	const locale = navigator.language;
-	if (locale === null || locale === undefined) {
-		throw new Error('locale cannot be null or undefined');
-	}
-
-	const formattedDateParts = new Intl.DateTimeFormat(
-		locale,
-		intlOptions,
-	).formatToParts(date);
-	if (!formattedDateParts) {
-		throw new Error('toLocaleDateString returned null or undefined');
-	}
-
-	const year = formattedDateParts.find((part) => part.type === 'year')?.value;
-	const month = formattedDateParts.find(
-		(part) => part.type === 'month',
-	)?.value;
-	const day = formattedDateParts.find((part) => part.type === 'day')?.value;
-
-	if (year === undefined || month === undefined || day === undefined) {
-		throw new Error('Could not find year, month, or day in formatted date');
-	}
-
-	return `${year}-${month}-${day}`;
 }
