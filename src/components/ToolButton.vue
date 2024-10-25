@@ -41,6 +41,8 @@ if (props.circle) {
 
 <style scoped>
 button {
+	position: relative;
+	z-index: 1;
 	cursor: pointer;
 	font-family: Dosis;
 	font-size: larger;
@@ -74,11 +76,11 @@ button.save-button:active {
 }
 
 button.delete-button {
-	border: 2px solid #a75d5d; /* Vermelho pastel mais suave */
+	border: 2px solid #a75d5d;
 	border-radius: 13px;
 	border-bottom: 6px solid #a75d5d;
 	background-color: #fa7676;
-	color: #a83232; /* Cor do texto em tom pastel */
+	color: #a83232;
 }
 
 button.delete-button:hover {
