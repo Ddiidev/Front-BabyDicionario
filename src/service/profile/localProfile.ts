@@ -1,7 +1,7 @@
 import { CurrentUserLogged } from "@/constants/userLogged";
 import type { IFamilyProfiles } from "@/models/familyProfiles";
 import type { IProfile } from "@/models/profile";
-import type { Word } from "@/models/words";
+import { Word } from "@/models/words";
 import { calculateAge } from "@/utils/date";
 import { getPathImageDefault } from "@/utils/imageProfile";
 import { removeSpecialCharacters } from "@/utils/treatText";
@@ -11,7 +11,7 @@ export function newLocalProfile(profile: IProfile): IProfile {
     const profiles: IProfile[] = JSON.parse(localStorage.getItem('profiles') || '[]');
 
     profile.uuid = crypto.randomUUID();
-    profile.short_uuid = profile.uuid.slice(0, 8);
+    profile.short_uuid = removeSpecialCharacters(profile.uuid.slice(0, 12));
     if (profile.name_shared_link === undefined || profile.name_shared_link === '') {
         profile.name_shared_link = removeSpecialCharacters(profile.first_name);
     }
@@ -117,4 +117,10 @@ export function deleteLocalWordsFromProfile(profileUUID: string) {
     words = words.filter(p => p.profile_uuid !== profileUUID);
 
     localStorage.setItem('words', JSON.stringify(words));
+}
+
+export function getLocalWordsFromProfile(profileUUID?: string) {
+    const words = (JSON.parse(localStorage.getItem('words') || '[]') as any[]).map(w => new Word(w));
+
+    return words.filter(w => w.profile_uuid == profileUUID);
 }
