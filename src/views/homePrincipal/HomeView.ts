@@ -16,45 +16,46 @@ export function setThis(me: any) {
 }
 export async function mounted(self: any) {
 	setThis(self);
-	setTimeout(async () => {
-		await dataCurrentUserLogged();
+	await dataCurrentUserLogged();
 
+
+	if (!CurrentUserLogged.userLogged.isLogged()) {
+		data.profile = getLocalFamilyProfile();
+		data.profile.father!.currentImage = getPathImageDefault('', Sex.male);
+		data.profile.mother!.currentImage = getPathImageDefault('', Sex.female);
+
+	} else {
+		data.profile = await servProfile.loadFamilyProfile();
+		data.profile.father!.currentImage = await imageProfile(
+			CurrentUserLogged.userLogged.uuid!,
+			data.profile.father?.uuid!,
+			data.profile.father?.uuid !== '' ? data.profile.father?.sex! : Sex.male,
+			async (image: Promise<string>) => {
+				data.profile.father!.currentImage = await image;
+			}
+		);
+
+		data.profile.mother!.currentImage = await imageProfile(
+			CurrentUserLogged.userLogged.uuid!,
+			data.profile.mother?.uuid!,
+			data.profile.mother?.uuid !== '' ? data.profile.mother?.sex! : Sex.female,
+			async (image: Promise<string>) => {
+				data.profile.mother!.currentImage = await image;
+			}
+		);
+	}
+
+	data.profile.babys.forEach(async (profile) => {
+		setTimeout(async () => {
+			profile.currentImage = await getImageCurrentProfile(profile);
+		}, 50)
 
 		if (!CurrentUserLogged.userLogged.isLogged()) {
-			data.profile = getLocalFamilyProfile();
-			data.profile.father!.currentImage = getPathImageDefault('', Sex.male);
-			data.profile.mother!.currentImage = getPathImageDefault('', Sex.female);
-
+			profile.wordsCount = getLocalCountWords(profile.uuid!);
 		} else {
-			data.profile = await servProfile.loadFamilyProfile();
-			data.profile.father!.currentImage = await imageProfile(
-				CurrentUserLogged.userLogged.uuid!,
-				data.profile.father?.uuid!,
-				data.profile.father?.uuid !== '' ? data.profile.father?.sex! : Sex.male,
-				async (image: Promise<string>) => {
-					data.profile.father!.currentImage = await image;
-				}
-			);
-
-			data.profile.mother!.currentImage = await imageProfile(
-				CurrentUserLogged.userLogged.uuid!,
-				data.profile.mother?.uuid!,
-				data.profile.mother?.uuid !== '' ? data.profile.mother?.sex! : Sex.female,
-				async (image: Promise<string>) => {
-					data.profile.mother!.currentImage = await image;
-				}
-			);
+			profile.wordsCount = await servWords.countWords(profile.uuid!);
 		}
-
-		data.profile.babys.forEach(async (profile) => {
-			profile.currentImage = await getImageCurrentProfile(profile);
-			if (!CurrentUserLogged.userLogged.isLogged()) {
-				profile.wordsCount = getLocalCountWords(profile.uuid!);
-			} else {
-				profile.wordsCount = await servWords.countWords(profile.uuid!);
-			}
-		});
-	}, 1000);
+	});
 }
 
 export function containMother(): boolean {

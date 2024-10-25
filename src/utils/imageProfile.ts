@@ -36,11 +36,13 @@ export async function imageProfile(
 			localStorage.removeItem(cacheKey);
 		}
 	} else {
+		callbackResultFinal?.(Promise.resolve(getPathImageDefault(profile_uuid, sexProfile)));
+
 		return await requestImage(user_uuid, profile_uuid, sexProfile, cacheKey);
 	}
 }
 
-function getCacheImage(cacheKey: string): CacheImage | undefined {
+export function getCacheImage(cacheKey: string): CacheImage | undefined {
 	const cachedData = localStorage.getItem(cacheKey);
 
 	if (cachedData) {
