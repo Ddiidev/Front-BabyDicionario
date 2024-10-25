@@ -7,15 +7,17 @@ import { dataCurrentUserLogged } from '@/service/user/user';
 import { CurrentUserLogged } from '@/constants/userLogged';
 import { getProfile } from '../profile/profileView';
 import { Emitter } from '@/utils/emitter';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import router from '@/router';
 import {
 	formatarValorInput,
+	stringDateNow,
 	stringDateToUnix,
 	unixDateToString,
 } from '../utils';
 import { deleteLocalPhotoProfile, deleteLocalProfile, deleteLocalWordsFromProfile, getLocalProfile, newLocalPhotoProfile, newLocalProfile, saveLocalProfile } from '@/service/profile/localProfile';
 import * as servProfile from '@/service/profile/profile';
+import { DateNow } from '@/utils/date';
 
 export let self: any;
 export function setThis(me: any) {
@@ -84,6 +86,7 @@ async function loadProfile() {
 	}
 
 	if (profile) {
+		// debugger
 		Object.assign(data, profile);
 
 		data._sex = profile.sex as Sex;
@@ -148,6 +151,21 @@ function setHeight() {
 export async function mounted(self: any) {
 	setThis(self);
 
+	/**
+	 * Gambiarra das brabas
+	 * Pois por algum motivo quando carrega a página pela primeira vez pelo sistema de rotas
+	 * os eventos de watch, não funcionam como deveriam e acabam quebrando tudo
+	 * então foi feito essa gambiarra para que sempre que essa condição seja verdadeira
+	 * a página recarregue.
+	 * TODO: Remover essa gambiarra após consertar a causa do erro
+	 */
+	if (Object.keys(data).length === 2 && 'name_shared' in data && 'uuid' in data) {
+		window.location.reload();
+	}
+
+	if (data._birth_date == '' || data.birth_date == 0)
+		data._birth_date = stringDateNow()
+
 	try {
 		await dataCurrentUserLogged();
 	} catch (error) {
@@ -177,18 +195,6 @@ export async function mounted(self: any) {
 		);
 	} catch (err) {
 		console.log(err);
-	}
-
-	/**
-	 * Gambiarra das brabas
-	 * Pois por algum motivo quando carrega a página pela primeira vez pelo sistema de rotas
-	 * os eventos de watch, não funcionam como deveriam e acabam quebrando tudo
-	 * então foi feito essa gambiarra para que sempre que essa condição seja verdadeira
-	 * a página recarregue.
-	 * TODO: Remover essa gambiarra após consertar a causa do erro
-	 */
-	if (Object.keys(data).length === 2 && 'name_shared' in data && 'uuid' in data) {
-		window.location.reload();
 	}
 
 	visibleDeleteProfileButton();
@@ -251,7 +257,7 @@ export async function save() {
 				// eslint-disable-next-line no-self-assign
 				window.location.href = window.location.href;
 				window.location.reload();
-			}, 4000);
+			}, 1000);
 		} else {
 			if (dataState.imageFile !== undefined)
 				await uploadImageProfile(
@@ -273,7 +279,7 @@ export async function save() {
 					.replace(data.uuid!, data.short_uuid!);
 
 				window.location.reload();
-			}, 4000);
+			}, 1000);
 		}
 	} catch (error) {
 		console.log(error);

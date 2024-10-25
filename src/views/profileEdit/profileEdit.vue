@@ -126,7 +126,7 @@ import router from '@/router';
 				</div>
 
 				<div style="display: flex; justify-content: center;">
-					<ToolButton style="width: 10%" v-if="profileEditImpl.dataState.visibleDeleteProfileButton" delete
+					<ToolButton v-if="profileEditImpl.dataState.visibleDeleteProfileButton" delete
 						@click="profileEditImpl.dataState.viewerModalDelete = true">Excluir</ToolButton>
 
 					<ToolButton style="width: 45%" @click="profileEditImpl.save()">Salvar</ToolButton>
@@ -152,7 +152,6 @@ import ToolButtonBack from '@/components/ToolButtonBack.vue';
 import * as profileEditImpl from './profileEdit';
 import { useRoute } from 'vue-router';
 import { defineComponent } from 'vue';
-import { Responsible } from '@/contracts/contracts_shared/responsavel';
 
 export default defineComponent({
 	data() {
