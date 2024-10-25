@@ -1,4 +1,4 @@
-import { Responsible } from '@/contracts/contracts_shared/responsavel';
+import { getNameResponsible, Responsible } from '@/contracts/contracts_shared/responsavel';
 import type { ITokenContract } from '@/contracts/token/tokenJwt';
 
 export class UserLogged {
@@ -10,10 +10,7 @@ export class UserLogged {
 	token = {} as ITokenContract;
 
 	public getTextResponsible(): string {
-		const name = Responsible[this.responsible!].toString() ?? '';
-		if (name.length > 0)
-			return name[0].toLocaleUpperCase() + name.substring(1);
-		else return '';
+		return getNameResponsible(this.responsible)
 	}
 
 	public getNameComplete(): string {
@@ -22,13 +19,4 @@ export class UserLogged {
 	isLogged(): boolean {
 		return !(this.uuid == undefined || this.uuid == '');
 	}
-}
-
-// TODO: Torana-lo genérico o mais breve
-export function getResponsibleValue(s: string): Responsible | undefined {
-	const mapping: { [key: string]: Responsible } = {
-		pai: Responsible.father,
-		mae: Responsible.mother,
-	};
-	return mapping[s];
 }

@@ -1,6 +1,4 @@
-import { type UserLogged, getResponsibleValue } from '@/models/userLogged';
 import axios, { AxiosHeaders, type RawAxiosRequestHeaders } from 'axios';
-import { Responsible } from '@/contracts/contracts_shared/responsavel';
 import type { ITokenContract } from '@/contracts/token/tokenJwt';
 import {
 	StatusContractApi,
